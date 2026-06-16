@@ -7,6 +7,8 @@ import { ZombicideItemSheet } from './sheets/item-sheet.mjs';
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from './helpers/templates.mjs';
 import { ZOMBICIDE } from './helpers/config.mjs';
+// Import DataModel classes.
+import * as models from './data/_module.mjs';
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -27,7 +29,17 @@ Hooks.once('init', function () {
   };
 
   CONFIG.Actor.documentClass = ZombicideActor;
+  CONFIG.Actor.dataModels = {
+    survivor: models.SurvivorData,
+    zombie: models.ZombieData,
+  };
+
   CONFIG.Item.documentClass = ZombicideItem;
+  CONFIG.Item.dataModels = {
+    weapon: models.WeaponData,
+    equipment: models.EquipmentData,
+    skill: models.SkillData,
+  };
 
   CONFIG.ActiveEffect.legacyTransferral = false;
 

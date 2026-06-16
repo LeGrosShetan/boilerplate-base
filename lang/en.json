@@ -10,10 +10,35 @@
       "Orange": "Orange",
       "Red": "Red"
     },
+    "Attribute": {
+      "Agility": "Agility",
+      "Strength": "Strength",
+      "Perception": "Perception",
+      "Intellect": "Intellect"
+    },
+    "ZombieType": {
+      "Walker": "Walker",
+      "Runner": "Runner",
+      "Fatty": "Fatty",
+      "Abomination": "Abomination"
+    },
     "Weapon": {
-      "Range": {
+      "Type": {
         "Melee": "Melee",
         "Ranged": "Ranged"
+      },
+      "Range": {
+        "Melee": "Melee",
+        "Short": "Short",
+        "Medium": "Medium",
+        "Long": "Long"
+      }
+    },
+    "Skill": {
+      "ActionType": {
+        "Passive": "Passive",
+        "Active": "Active",
+        "Free": "Free action"
       }
     },
     "Effect": {
