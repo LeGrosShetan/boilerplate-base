@@ -1,21 +1,19 @@
 {
-  "BOILERPLATE": {
-    "Ability": {
-      "Str": { "long": "Strength", "abbr": "str" },
-      "Con": { "long": "Constitution", "abbr": "con" },
-      "Dex": { "long": "Dexterity", "abbr": "dex" },
-      "Int": { "long": "Intelligence", "abbr": "int" },
-      "Wis": { "long": "Wisdom", "abbr": "wis" },
-      "Cha": { "long": "Charisma", "abbr": "cha" }
-    },
+  "ZOMBICIDE": {
     "SheetLabels": {
-      "Actor": "Boilerplate Actor Sheet",
-      "Item": "Boilerplate Item Sheet"
+      "Actor": "Zombicide Actor Sheet",
+      "Item": "Zombicide Item Sheet"
     },
-    "Item": {
-      "Spell": {
-        "SpellLVL": "Level {level} Spells",
-        "AddLVL": "Add LVL {level}"
+    "DangerLevel": {
+      "Blue": "Blue",
+      "Yellow": "Yellow",
+      "Orange": "Orange",
+      "Red": "Red"
+    },
+    "Weapon": {
+      "Range": {
+        "Melee": "Melee",
+        "Ranged": "Ranged"
       }
     },
     "Effect": {
@@ -29,13 +27,13 @@
 
   "TYPES": {
     "Actor": {
-      "character": "Character",
-      "npc": "NPC"
+      "survivor": "Survivor",
+      "zombie": "Zombie"
     },
     "Item": {
-      "item": "Item",
-      "feature": "Feature",
-      "spell": "Spell"
+      "weapon": "Weapon",
+      "equipment": "Equipment",
+      "skill": "Skill"
     }
   }
 }

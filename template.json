@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["character", "npc"],
+    "types": ["survivor", "zombie"],
     "templates": {
       "base": {
         "health": {
@@ -8,66 +8,42 @@
           "min": 0,
           "max": 10
         },
-        "power": {
-          "value": 5,
-          "min": 0,
-          "max": 5
-        },
         "biography": ""
       }
     },
-    "character": {
+    "survivor": {
       "templates": ["base"],
-      "attributes": {
-        "level": {
-          "value": 1
-        }
-      },
-      "abilities": {
-        "str": {
-          "value": 10
-        },
-        "dex": {
-          "value": 10
-        },
-        "con": {
-          "value": 10
-        },
-        "int": {
-          "value": 10
-        },
-        "wis": {
-          "value": 10
-        },
-        "cha": {
-          "value": 10
-        }
+      "actions": {
+        "value": 3,
+        "min": 0,
+        "max": 3
       }
     },
-    "npc": {
+    "zombie": {
       "templates": ["base"],
-      "cr": 0
+      "priority": 1
     }
   },
   "Item": {
-    "types": ["item", "feature", "spell"],
+    "types": ["weapon", "equipment", "skill"],
     "templates": {
       "base": {
         "description": ""
       }
     },
-    "item": {
+    "weapon": {
       "templates": ["base"],
-      "quantity": 1,
-      "weight": 0,
-      "formula": "d20 + @str.mod + ceil(@lvl / 2)"
+      "damage": "1",
+      "range": "melee",
+      "noise": 0
     },
-    "feature": {
-      "templates": ["base"]
-    },
-    "spell": {
+    "equipment": {
       "templates": ["base"],
-      "spellLevel": 1
+      "quantity": 1
+    },
+    "skill": {
+      "templates": ["base"],
+      "dangerLevel": "blue"
     }
   }
 }
