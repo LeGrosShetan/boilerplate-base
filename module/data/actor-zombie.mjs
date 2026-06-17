@@ -23,7 +23,6 @@ export default class ZombieData extends ZombicideActorBase {
   }
 
   prepareDerivedData() {
-    this.zombieType.label =
-      game.i18n.localize(`ZOMBICIDE.ZombieType.${this.zombieType.capitalize()}`) ?? this.zombieType;
+    this.zombieTypeLabel = game.i18n.localize(`ZOMBICIDE.ZombieType.${this.zombieType.capitalize()}`);
   }
 }

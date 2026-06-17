@@ -29,7 +29,6 @@ export default class SkillData extends ZombicideItemBase {
   }
 
   prepareDerivedData() {
-    this.dangerLevel.label =
-      game.i18n.localize(`ZOMBICIDE.DangerLevel.${this.dangerLevel.capitalize()}`) ?? this.dangerLevel;
+    this.dangerLevelLabel = game.i18n.localize(`ZOMBICIDE.DangerLevel.${this.dangerLevel.capitalize()}`);
   }
 }
