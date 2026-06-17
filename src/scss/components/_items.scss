@@ -86,10 +86,12 @@
   }
 
   .item-prop {
+    flex: 0 0 80px;
     text-align: center;
-    border-left: 1px solid #c9c7b8;
-    border-right: 1px solid #c9c7b8;
+    border-left: 1px solid $c-faint;
+    border-right: 1px solid $c-faint;
     font-size: 12px;
+    padding: 0 4px;
   }
 
   // Section Header
@@ -113,9 +115,3 @@
   }
 }
 
-// Example style for Boilerplate (can be removed if not needed).
-.item-formula {
-  
-  flex: 0 0 200px;
-  padding: 0 8px;
-}

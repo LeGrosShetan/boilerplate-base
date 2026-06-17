@@ -327,10 +327,12 @@
   margin-right: 5px;
 }
 .zombicide .items-list .item-prop {
+  flex: 0 0 80px;
   text-align: center;
   border-left: 1px solid #c9c7b8;
   border-right: 1px solid #c9c7b8;
   font-size: 12px;
+  padding: 0 4px;
 }
 .zombicide .items-list .items-header {
   height: 28px;
@@ -349,10 +351,6 @@
   padding-left: 5px;
   text-align: left;
 }
-.zombicide .item-formula {
-  flex: 0 0 200px;
-  padding: 0 8px;
-}
 .zombicide .effects .item .effect-source,
 .zombicide .effects .item .effect-duration,
 .zombicide .effects .item .effect-controls {
@@ -363,4 +361,75 @@
 }
 .zombicide .effects .item .effect-controls {
   border: none;
+}
+.zombicide .danger-blue {
+  --danger-color: #3a7bd5;
+}
+.zombicide .danger-yellow {
+  --danger-color: #e8a020;
+}
+.zombicide .danger-orange {
+  --danger-color: #d4621a;
+}
+.zombicide .danger-red {
+  --danger-color: #b82020;
+}
+.zombicide .danger-level .danger-badge {
+  display: inline-block;
+  padding: 2px 12px;
+  border-radius: 3px;
+  background-color: var(--danger-color, #444);
+  color: #fff;
+  font-weight: bold;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.zombicide .items-list .item-prop[class*=danger-] {
+  font-weight: bold;
+  color: var(--danger-color, #444);
+}
+.zombicide select.danger-blue {
+  border-color: #3a7bd5;
+}
+.zombicide select.danger-yellow {
+  border-color: #e8a020;
+}
+.zombicide select.danger-orange {
+  border-color: #d4621a;
+}
+.zombicide select.danger-red {
+  border-color: #b82020;
+}
+.zombicide .attributes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 5px;
+}
+.zombicide .attributes .attribute {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 5px;
+  border-bottom: 1px solid #c9c7b8;
+}
+.zombicide .attributes .attribute:last-child {
+  border-bottom: none;
+}
+.zombicide .attributes .attribute .resource-label {
+  flex: 1;
+  font-size: 13px;
+  cursor: pointer;
+}
+.zombicide .attributes .attribute input[type=text] {
+  flex: 0 0 38px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 2px;
+  border: 1px solid #b5b3a4;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.6);
 }

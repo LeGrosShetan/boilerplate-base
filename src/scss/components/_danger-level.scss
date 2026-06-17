@@ -1,0 +1,37 @@
+// --------------------------------------------------
+// Danger level — colour tokens
+// Applied as modifier classes (.danger-blue, etc.)
+// on any element that needs danger-level colouring.
+// --------------------------------------------------
+
+.danger-blue   { --danger-color: #{$c-danger-blue};   }
+.danger-yellow { --danger-color: #{$c-danger-yellow}; }
+.danger-orange { --danger-color: #{$c-danger-orange}; }
+.danger-red    { --danger-color: #{$c-danger-red};    }
+
+// Badge displayed in the survivor sheet header
+.danger-level {
+  .danger-badge {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 3px;
+    background-color: var(--danger-color, #{$c-tan});
+    color: $c-white;
+    font-weight: bold;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+}
+
+// Coloured text for danger level shown inside item lists (skills tab)
+.items-list .item-prop[class*="danger-"] {
+  font-weight: bold;
+  color: var(--danger-color, #{$c-tan});
+}
+
+// Coloured border on the danger-level select in the skill item sheet
+select.danger-blue   { border-color: $c-danger-blue;   }
+select.danger-yellow { border-color: $c-danger-yellow; }
+select.danger-orange { border-color: $c-danger-orange; }
+select.danger-red    { border-color: $c-danger-red;    }

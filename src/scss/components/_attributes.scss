@@ -1,0 +1,41 @@
+// --------------------------------------------------
+// Survivor attributes sidebar
+// --------------------------------------------------
+
+.attributes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: $padding-sm;
+
+  .attribute {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    padding: 4px $padding-sm;
+    border-bottom: 1px solid $c-faint;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    // Attribute name — rollable on hover
+    .resource-label {
+      flex: 1;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    input[type="text"] {
+      flex: 0 0 38px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: bold;
+      padding: 2px;
+      border: 1px solid $c-beige;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.6);
+    }
+  }
+}
