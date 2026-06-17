@@ -34,6 +34,11 @@
         "Free": "Action gratuite"
       }
     },
+    "Roll": {
+      "Hits": "touches",
+      "Hit": "Touché !",
+      "Miss": "Raté"
+    },
     "Effect": {
       "Source": "Source",
       "Toggle": "Activer / Désactiver",

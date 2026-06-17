@@ -66,7 +66,7 @@
             {{#each system.attributes as |attr key|}}
             <div class="attribute flexrow flex-group-center">
               <label class="resource-label rollable flexlarge align-left"
-                data-roll="{{attr.value}}d6"
+                data-roll="{{attr.value}}d6cs>=4"
                 data-label="{{localize (lookup @root.config.attributes key)}}">
                 {{localize (lookup @root.config.attributes key)}}
               </label>
