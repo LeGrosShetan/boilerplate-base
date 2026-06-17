@@ -1,0 +1,105 @@
+<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+
+  {{!-- Sheet Header --}}
+  <header class="sheet-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+    <div class="header-fields">
+      <h1 class="charname">
+        <input name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
+      </h1>
+      <div class="resources grid grid-4col">
+
+        <div class="resource flex-group-center">
+          <label class="resource-label">Health</label>
+          <div class="resource-content flexrow flex-center flex-between">
+            <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
+            <span>/</span>
+            <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number"/>
+          </div>
+        </div>
+
+        <div class="resource flex-group-center">
+          <label class="resource-label">Actions</label>
+          <div class="resource-content flexrow flex-center flex-between">
+            <input type="text" name="system.actions.value" value="{{system.actions.value}}" data-dtype="Number"/>
+            <span>/</span>
+            <input type="text" name="system.actions.max" value="{{system.actions.max}}" data-dtype="Number"/>
+          </div>
+        </div>
+
+        <div class="resource flex-group-center">
+          <label class="resource-label">XP</label>
+          <div class="resource-content flexrow flex-center flex-between">
+            <input type="text" name="system.experience" value="{{system.experience}}" data-dtype="Number"/>
+          </div>
+        </div>
+
+        {{!-- Danger level is derived from XP — read-only --}}
+        <div class="resource flex-group-center danger-level {{system.dangerLevel}}">
+          <label class="resource-label">Danger</label>
+          <div class="resource-content flexrow flex-center">
+            <span class="danger-badge">{{localize (lookup config.dangerLevels system.dangerLevel)}}</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="skills">Skills</a>
+    <a class="item" data-tab="weapons">Weapons</a>
+    <a class="item" data-tab="equipment">Equipment</a>
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="effects">Effects</a>
+  </nav>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+
+    {{!-- Skills Tab --}}
+    <div class="tab" data-group="primary" data-tab="skills">
+      <section class="grid grid-3col">
+        <aside class="sidebar">
+          <div class="attributes flexcol">
+            {{#each system.attributes as |attr key|}}
+            <div class="attribute flexrow flex-group-center">
+              <label class="resource-label rollable flexlarge align-left"
+                data-roll="{{attr.value}}d6"
+                data-label="{{localize (lookup @root.config.attributes key)}}">
+                {{localize (lookup @root.config.attributes key)}}
+              </label>
+              <input type="text" name="system.attributes.{{key}}.value" value="{{attr.value}}" data-dtype="Number"/>
+            </div>
+            {{/each}}
+          </div>
+        </aside>
+        <section class="main grid-span-2">
+          {{> "systems/zombicide-chronicles/templates/actor/parts/actor-skills.hbs"}}
+        </section>
+      </section>
+    </div>
+
+    {{!-- Weapons Tab --}}
+    <div class="tab" data-group="primary" data-tab="weapons">
+      {{> "systems/zombicide-chronicles/templates/actor/parts/actor-weapons.hbs"}}
+    </div>
+
+    {{!-- Equipment Tab --}}
+    <div class="tab" data-group="primary" data-tab="equipment">
+      {{> "systems/zombicide-chronicles/templates/actor/parts/actor-equipment.hbs"}}
+    </div>
+
+    {{!-- Description Tab --}}
+    <div class="tab biography" data-group="primary" data-tab="description">
+      {{editor enrichedBiography target="system.biography" engine="prosemirror" button=true editable=editable}}
+    </div>
+
+    {{!-- Active Effects Tab --}}
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{> "systems/zombicide-chronicles/templates/actor/parts/actor-effects.hbs"}}
+    </div>
+
+  </section>
+</form>

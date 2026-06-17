@@ -1,0 +1,71 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+    <div class="header-fields">
+      <h1 class="charname">
+        <input name="name" type="text" value="{{item.name}}" placeholder="Weapon name"/>
+      </h1>
+      <div class="grid grid-2col">
+        <div class="resource">
+          <label class="resource-label">Type</label>
+          <select name="system.weaponType">
+            {{selectOptions config.weaponTypes selected=system.weaponType localize=true}}
+          </select>
+        </div>
+        <div class="resource">
+          <label class="resource-label">Range</label>
+          <select name="system.range">
+            {{selectOptions config.weaponRanges selected=system.range localize=true}}
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="attributes">Attributes</a>
+    <a class="item" data-tab="effects">Effects</a>
+  </nav>
+
+  <section class="sheet-body">
+
+    <div class="tab" data-group="primary" data-tab="description">
+      {{editor enrichedDescription target="system.description" engine="prosemirror" button=true editable=editable}}
+    </div>
+
+    <div class="tab attributes" data-group="primary" data-tab="attributes">
+      <div class="grid grid-3col">
+
+        <div class="resource flex-group-center">
+          <label class="resource-label">Damage</label>
+          <input type="text" name="system.damage" value="{{system.damage}}" placeholder="e.g. 1"/>
+        </div>
+
+        <div class="resource flex-group-center">
+          <label class="resource-label">Accuracy (min hits)</label>
+          <input type="text" name="system.accuracy" value="{{system.accuracy}}" data-dtype="Number"/>
+        </div>
+
+        <div class="resource flex-group-center">
+          <label class="resource-label">Noise Tokens</label>
+          <input type="text" name="system.noise" value="{{system.noise}}" data-dtype="Number"/>
+        </div>
+
+        <div class="resource flex-group-center">
+          <label class="resource-label">Hands Required</label>
+          <select name="system.hands">
+            <option value="1" {{#if (eq system.hands 1)}}selected{{/if}}>1 hand</option>
+            <option value="2" {{#if (eq system.hands 2)}}selected{{/if}}>2 hands</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="tab effects" data-group="primary" data-tab="effects">
+      {{> "systems/zombicide-chronicles/templates/item/parts/item-effects.hbs"}}
+    </div>
+
+  </section>
+</form>

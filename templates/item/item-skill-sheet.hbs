@@ -1,0 +1,70 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+    <div class="header-fields">
+      <h1 class="charname">
+        <input name="name" type="text" value="{{item.name}}" placeholder="Skill name"/>
+      </h1>
+      <div class="grid grid-2col">
+        <div class="resource">
+          <label class="resource-label">Unlocked At</label>
+          <select name="system.dangerLevel" class="danger-{{system.dangerLevel}}">
+            {{selectOptions config.dangerLevels selected=system.dangerLevel localize=true}}
+          </select>
+        </div>
+        <div class="resource">
+          <label class="resource-label">Action Type</label>
+          <select name="system.actionType">
+            {{selectOptions config.skillActionTypes selected=system.actionType localize=true}}
+          </select>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="attributes">Attributes</a>
+    <a class="item" data-tab="effects">Effects</a>
+  </nav>
+
+  <section class="sheet-body">
+
+    <div class="tab" data-group="primary" data-tab="description">
+      {{editor enrichedDescription target="system.description" engine="prosemirror" button=true editable=editable}}
+    </div>
+
+    <div class="tab attributes" data-group="primary" data-tab="attributes">
+      <div class="grid grid-2col">
+
+        <div class="resource flex-group-center">
+          <label class="resource-label">Danger Level</label>
+          <select name="system.dangerLevel" class="danger-{{system.dangerLevel}}">
+            {{selectOptions config.dangerLevels selected=system.dangerLevel localize=true}}
+          </select>
+        </div>
+
+        <div class="resource flex-group-center">
+          <label class="resource-label">Action Type</label>
+          <select name="system.actionType">
+            {{selectOptions config.skillActionTypes selected=system.actionType localize=true}}
+          </select>
+        </div>
+
+        <div class="resource flex-group-center grid-span-2">
+          <label class="resource-label">Linked Attribute (for rolls)</label>
+          <select name="system.linkedAttribute">
+            <option value="">— None —</option>
+            {{selectOptions config.attributes selected=system.linkedAttribute localize=true}}
+          </select>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="tab effects" data-group="primary" data-tab="effects">
+      {{> "systems/zombicide-chronicles/templates/item/parts/item-effects.hbs"}}
+    </div>
+
+  </section>
+</form>
