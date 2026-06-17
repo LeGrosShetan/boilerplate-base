@@ -18,12 +18,6 @@ ZOMBICIDE.weaponTypes = {
   ranged: 'ZOMBICIDE.Weapon.Type.Ranged',
 };
 
-ZOMBICIDE.weaponRanges = {
-  melee:  'ZOMBICIDE.Weapon.Range.Melee',
-  short:  'ZOMBICIDE.Weapon.Range.Short',
-  medium: 'ZOMBICIDE.Weapon.Range.Medium',
-  long:   'ZOMBICIDE.Weapon.Range.Long',
-};
 
 ZOMBICIDE.skillActionTypes = {
   passive: 'ZOMBICIDE.Skill.ActionType.Passive',

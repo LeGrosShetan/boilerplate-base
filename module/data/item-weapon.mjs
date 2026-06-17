@@ -15,11 +15,9 @@ export default class WeaponData extends ZombicideItemBase {
     // Damage dice/value (e.g. "1", "2", "1d6")
     schema.damage = new fields.StringField({ required: true, initial: '1', blank: false });
 
-    schema.range = new fields.StringField({
-      required: true,
-      initial: 'melee',
-      choices: ['melee', 'short', 'medium', 'long'],
-    });
+    // Range expressed in zones (0 = same zone as target)
+    schema.rangeMin = new fields.NumberField({ ...int, initial: 0, min: 0 });
+    schema.rangeMax = new fields.NumberField({ ...int, initial: 0, min: 0 });
 
     schema.noise = new fields.NumberField({ ...int, initial: 0, min: 0 });
 

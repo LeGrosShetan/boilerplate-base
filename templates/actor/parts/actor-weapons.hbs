@@ -21,7 +21,7 @@
       <h4>{{item.name}}</h4>
     </div>
     <div class="item-prop">{{item.system.damage}}</div>
-    <div class="item-prop">{{localize (lookup @root.config.weaponRanges item.system.range)}}</div>
+    <div class="item-prop">{{item.system.rangeMin}} – {{item.system.rangeMax}}</div>
     <div class="item-prop">{{item.system.noise}}</div>
     <div class="item-controls">
       <a class="item-control item-edit" title="Edit"><i class="fas fa-edit"></i></a>

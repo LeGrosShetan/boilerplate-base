@@ -13,10 +13,12 @@
           </select>
         </div>
         <div class="resource">
-          <label class="resource-label">Range</label>
-          <select name="system.range">
-            {{selectOptions config.weaponRanges selected=system.range localize=true}}
-          </select>
+          <label class="resource-label">Range (min – max zones)</label>
+          <div class="flexrow flex-center flex-between">
+            <input type="text" name="system.rangeMin" value="{{system.rangeMin}}" data-dtype="Number" placeholder="min"/>
+            <span>–</span>
+            <input type="text" name="system.rangeMax" value="{{system.rangeMax}}" data-dtype="Number" placeholder="max"/>
+          </div>
         </div>
       </div>
     </div>
