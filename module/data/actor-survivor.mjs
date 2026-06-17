@@ -24,16 +24,13 @@ export default class SurvivorData extends ZombicideActorBase {
 
     // Core attributes used for skill checks (d6 dice pool)
     schema.attributes = new fields.SchemaField({
-      agility: new fields.SchemaField({
+      muscles: new fields.SchemaField({
         value: new fields.NumberField({ ...int, initial: 3, min: 1 }),
       }),
-      strength: new fields.SchemaField({
+      cerveau: new fields.SchemaField({
         value: new fields.NumberField({ ...int, initial: 3, min: 1 }),
       }),
-      perception: new fields.SchemaField({
-        value: new fields.NumberField({ ...int, initial: 3, min: 1 }),
-      }),
-      intellect: new fields.SchemaField({
+      tripes: new fields.SchemaField({
         value: new fields.NumberField({ ...int, initial: 3, min: 1 }),
       }),
     });

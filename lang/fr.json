@@ -1,0 +1,63 @@
+{
+  "ZOMBICIDE": {
+    "SheetLabels": {
+      "Actor": "Fiche Zombicide Chronicles",
+      "Item": "Objet Zombicide Chronicles"
+    },
+    "DangerLevel": {
+      "Blue": "Bleu",
+      "Yellow": "Jaune",
+      "Orange": "Orange",
+      "Red": "Rouge"
+    },
+    "Attribute": {
+      "Muscles": "Muscles",
+      "Cerveau": "Cerveau",
+      "Tripes": "Tripes"
+    },
+    "ZombieType": {
+      "Walker": "Marcheur",
+      "Runner": "Forcené",
+      "Fatty": "Balèze",
+      "Abomination": "Abomination"
+    },
+    "Weapon": {
+      "Type": {
+        "Melee": "Mêlée",
+        "Ranged": "À distance"
+      },
+      "Range": {
+        "Melee": "Mêlée",
+        "Short": "Courte",
+        "Medium": "Moyenne",
+        "Long": "Longue"
+      }
+    },
+    "Skill": {
+      "ActionType": {
+        "Passive": "Passif",
+        "Active": "Actif",
+        "Free": "Action gratuite"
+      }
+    },
+    "Effect": {
+      "Source": "Source",
+      "Toggle": "Activer / Désactiver",
+      "Temporary": "Effets temporaires",
+      "Passive": "Effets passifs",
+      "Inactive": "Effets inactifs"
+    }
+  },
+
+  "TYPES": {
+    "Actor": {
+      "survivor": "Survivant",
+      "zombie": "Zombie"
+    },
+    "Item": {
+      "weapon": "Arme",
+      "equipment": "Équipement",
+      "skill": "Compétence"
+    }
+  }
+}

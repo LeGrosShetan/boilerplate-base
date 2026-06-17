@@ -11,10 +11,9 @@
       "Red": "Red"
     },
     "Attribute": {
-      "Agility": "Agility",
-      "Strength": "Strength",
-      "Perception": "Perception",
-      "Intellect": "Intellect"
+      "Muscles": "Muscles",
+      "Cerveau": "Brain",
+      "Tripes": "Guts"
     },
     "ZombieType": {
       "Walker": "Walker",

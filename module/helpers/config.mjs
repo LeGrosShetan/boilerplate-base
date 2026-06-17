@@ -8,10 +8,9 @@ ZOMBICIDE.dangerLevels = {
 };
 
 ZOMBICIDE.attributes = {
-  agility:    'ZOMBICIDE.Attribute.Agility',
-  strength:   'ZOMBICIDE.Attribute.Strength',
-  perception: 'ZOMBICIDE.Attribute.Perception',
-  intellect:  'ZOMBICIDE.Attribute.Intellect',
+  muscles: 'ZOMBICIDE.Attribute.Muscles',
+  cerveau: 'ZOMBICIDE.Attribute.Cerveau',
+  tripes:  'ZOMBICIDE.Attribute.Tripes',
 };
 
 ZOMBICIDE.weaponTypes = {
