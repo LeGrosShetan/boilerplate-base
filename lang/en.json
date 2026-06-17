@@ -25,12 +25,6 @@
       "Type": {
         "Melee": "Melee",
         "Ranged": "Ranged"
-      },
-      "Range": {
-        "Melee": "Melee",
-        "Short": "Short",
-        "Medium": "Medium",
-        "Long": "Long"
       }
     },
     "Skill": {
