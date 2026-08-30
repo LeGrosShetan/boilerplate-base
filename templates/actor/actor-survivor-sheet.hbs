@@ -7,7 +7,7 @@
       <h1 class="charname">
         <input name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
       </h1>
-      <div class="resources grid grid-4col">
+      <div class="resources grid grid-3col">
 
         <div class="resource flex-group-center">
           <label class="resource-label">Health</label>
@@ -19,15 +19,6 @@
         </div>
 
         <div class="resource flex-group-center">
-          <label class="resource-label">Actions</label>
-          <div class="resource-content flexrow flex-center flex-between">
-            <input type="text" name="system.actions.value" value="{{system.actions.value}}" data-dtype="Number"/>
-            <span>/</span>
-            <input type="text" name="system.actions.max" value="{{system.actions.max}}" data-dtype="Number"/>
-          </div>
-        </div>
-
-        <div class="resource flex-group-center">
           <label class="resource-label">XP</label>
           <div class="resource-content flexrow flex-center flex-between">
             <input type="text" name="system.experience" value="{{system.experience}}" data-dtype="Number"/>
@@ -35,10 +26,10 @@
         </div>
 
         {{!-- Danger level is derived from XP — read-only --}}
-        <div class="resource flex-group-center danger-level {{system.dangerLevel}}">
+        <div class="resource flex-group-center danger-level danger-{{dangerLevel}}">
           <label class="resource-label">Danger</label>
           <div class="resource-content flexrow flex-center">
-            <span class="danger-badge">{{localize (lookup config.dangerLevels system.dangerLevel)}}</span>
+            <span class="danger-badge">{{dangerLevelLabel}}</span>
           </div>
         </div>
 

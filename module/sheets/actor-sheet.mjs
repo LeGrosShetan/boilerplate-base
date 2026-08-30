@@ -65,7 +65,15 @@ export class ZombicideActorSheet extends ActorSheet {
     return context;
   }
 
-  _prepareSurvivorData(context) {}
+  /**
+   * Expose derived values to the template. `toObject()` only serialises schema
+   * fields, so anything computed in prepareDerivedData() has to be added here.
+   * @param {object} context
+   */
+  _prepareSurvivorData(context) {
+    context.dangerLevel = this.actor.system.dangerLevel;
+    context.dangerLevelLabel = this.actor.system.dangerLevelLabel;
+  }
 
   /**
    * Organize and classify Items for Actor sheets.
