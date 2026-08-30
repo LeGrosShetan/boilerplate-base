@@ -35,10 +35,11 @@
       }
     },
     "Roll": {
-      "Hits": "touches",
-      "Hit": "Touché !",
-      "Miss": "Raté",
-      "Ones": "×1"
+      "Attack": "Attaque",
+      "SkillCheck": "Test de compétence",
+      "Successes": "Réussites",
+      "Recoverable": "Rattrapables",
+      "Failures": "Échecs"
     },
     "Effect": {
       "Source": "Source",

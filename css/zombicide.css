@@ -203,6 +203,54 @@
   text-align: center;
 }
 
+/* Chat cards render outside the sheet, so they stay unscoped */
+.zombicide-roll .roll-title {
+  font-weight: bold;
+  font-size: 13px;
+  color: #191813;
+}
+.zombicide-roll .roll-subtitle {
+  font-size: 11px;
+  color: #444;
+  margin-bottom: 4px;
+}
+.zombicide-roll .roll-tally {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+.zombicide-roll .roll-tally .tally {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3px 2px;
+  border-radius: 3px;
+  border: 1px solid var(--tally-color);
+  background: color-mix(in srgb, var(--tally-color) 12%, transparent);
+}
+.zombicide-roll .roll-tally .tally.success {
+  --tally-color: #3f8f3f;
+}
+.zombicide-roll .roll-tally .tally.recoverable {
+  --tally-color: #b8862b;
+}
+.zombicide-roll .roll-tally .tally.failure {
+  --tally-color: #b82020;
+}
+.zombicide-roll .roll-tally .tally-count {
+  font-size: 17px;
+  font-weight: bold;
+  line-height: 1.1;
+  color: var(--tally-color);
+}
+.zombicide-roll .roll-tally .tally-label {
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #444;
+}
+
 /* Styles limited to Zombicide Chronicles sheets */
 .zombicide .item-form {
   font-family: "Roboto", sans-serif;

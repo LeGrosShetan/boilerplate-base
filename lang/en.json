@@ -35,10 +35,11 @@
       }
     },
     "Roll": {
-      "Hits": "hits",
-      "Hit": "Hit!",
-      "Miss": "Miss",
-      "Ones": "×1"
+      "Attack": "Attack",
+      "SkillCheck": "Skill check",
+      "Successes": "Successes",
+      "Recoverable": "Recoverable",
+      "Failures": "Failures"
     },
     "Effect": {
       "Source": "Source",

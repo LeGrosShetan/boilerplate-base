@@ -1,3 +1,5 @@
+import { rollDicePool, SKILL_THRESHOLD } from '../helpers/dice.mjs';
+
 /**
  * Extend the basic Item for Zombicide Chronicles.
  * @extends {Item}
@@ -18,16 +20,20 @@ export class ZombicideItem extends Item {
 
   /**
    * Handle clickable rolls.
-   * Weapons roll a d6 pool (size = linked attribute) and count successes (≥ 4).
-   * Other items post their description to chat.
+   * Weapons roll an attack pool against their accuracy; skills bound to an
+   * attribute roll a skill check. Anything else posts its description to chat.
    */
   async roll() {
     const actor = this.actor;
     const speaker = ChatMessage.getSpeaker({ actor });
     const rollMode = game.settings.get('core', 'rollMode');
 
-    if (this.type === 'weapon' && actor) {
+    if (actor && this.type === 'weapon') {
       return this._rollWeaponAttack(speaker, rollMode);
+    }
+
+    if (actor && this.type === 'skill' && this.system.linkedAttribute) {
+      return this._rollSkillCheck(speaker, rollMode);
     }
 
     // Fallback: post item description
@@ -40,34 +46,50 @@ export class ZombicideItem extends Item {
   }
 
   /**
-   * Roll a weapon attack: [attr]d6, successes on 4+, compare to accuracy.
+   * Attack roll: [linked attribute]d6, each die ≥ accuracy is a success.
    * @private
    */
   async _rollWeaponAttack(speaker, rollMode) {
-    const actor = this.actor;
     const linkedAttr = this.system.linkedAttribute || 'muscles';
-    const attrValue = actor.system.attributes?.[linkedAttr]?.value ?? 1;
-    const accuracy = this.system.accuracy ?? 4;
-    const attrLabel = game.i18n.localize(`ZOMBICIDE.Attribute.${linkedAttr.capitalize()}`);
+    const pool = this.actor.system.attributes?.[linkedAttr]?.value ?? 1;
+    const threshold = this.system.accuracy ?? 4;
 
-    const roll = new Roll(`${attrValue}d6`);
-    await roll.evaluate();
-
-    const diceResults = roll.dice[0]?.results.filter(r => r.active) ?? [];
-    const hits = diceResults.filter(r => r.result >= accuracy).length;
-    const ones = diceResults.filter(r => r.result === 1).length;
-
-    const onesText = ones > 0
-      ? ` | ${ones} ${game.i18n.localize('ZOMBICIDE.Roll.Ones')}`
-      : '';
-
-    await roll.toMessage({
+    return rollDicePool({
+      pool,
+      threshold,
+      title: `${game.i18n.localize('ZOMBICIDE.Roll.Attack')} — ${this.name}`,
+      subtitle: this._rollSubtitle(linkedAttr, pool, threshold),
       speaker,
       rollMode,
-      flavor: `<strong>${this.name}</strong> (${attrLabel}, ≥${accuracy}) — `
-        + `${hits} ${game.i18n.localize('ZOMBICIDE.Roll.Hits')}${onesText}`,
     });
+  }
 
-    return roll;
+  /**
+   * Skill check: [linked attribute]d6, only a natural 6 is a success.
+   * @private
+   */
+  async _rollSkillCheck(speaker, rollMode) {
+    const linkedAttr = this.system.linkedAttribute;
+    const pool = this.actor.system.attributes?.[linkedAttr]?.value ?? 1;
+
+    return rollDicePool({
+      pool,
+      threshold: SKILL_THRESHOLD,
+      title: `${game.i18n.localize('ZOMBICIDE.Roll.SkillCheck')} — ${this.name}`,
+      subtitle: this._rollSubtitle(linkedAttr, pool, SKILL_THRESHOLD),
+      speaker,
+      rollMode,
+    });
+  }
+
+  /**
+   * "Muscles · 4d6 · ≥5" — describes the pool that was rolled.
+   * @private
+   */
+  _rollSubtitle(attributeKey, pool, threshold) {
+    const attrLabel = game.i18n.localize(
+      `ZOMBICIDE.Attribute.${attributeKey.capitalize()}`
+    );
+    return `${attrLabel} · ${pool}d6 · ≥${threshold}`;
   }
 }

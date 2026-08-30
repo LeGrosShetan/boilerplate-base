@@ -12,6 +12,9 @@
 @import 'global/grid';
 @import 'global/flex';
 
+/* Chat cards render outside the sheet, so they stay unscoped */
+@import 'components/roll';
+
 /* Styles limited to Zombicide Chronicles sheets */
 .zombicide {
   @import 'components/forms';

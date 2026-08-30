@@ -1,0 +1,64 @@
+// --------------------------------------------------
+// Dice pool results posted to chat.
+// Lives outside the .zombicide scope: chat messages are
+// rendered in the sidebar, not inside a sheet.
+// --------------------------------------------------
+
+$c-roll-success: #3f8f3f;
+$c-roll-recoverable: #b8862b;
+$c-roll-failure: #b82020;
+
+.zombicide-roll {
+  .roll-title {
+    font-weight: bold;
+    font-size: 13px;
+    color: $c-dark;
+  }
+
+  .roll-subtitle {
+    font-size: 11px;
+    color: $c-tan;
+    margin-bottom: 4px;
+  }
+
+  .roll-tally {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+
+    .tally {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3px 2px;
+      border-radius: 3px;
+      border: 1px solid var(--tally-color);
+      background: color-mix(in srgb, var(--tally-color) 12%, transparent);
+
+      &.success {
+        --tally-color: #{$c-roll-success};
+      }
+      &.recoverable {
+        --tally-color: #{$c-roll-recoverable};
+      }
+      &.failure {
+        --tally-color: #{$c-roll-failure};
+      }
+    }
+
+    .tally-count {
+      font-size: 17px;
+      font-weight: bold;
+      line-height: 1.1;
+      color: var(--tally-color);
+    }
+
+    .tally-label {
+      font-size: 9px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: $c-tan;
+    }
+  }
+}

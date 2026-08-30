@@ -2,6 +2,7 @@ import {
   onManageActiveEffect,
   prepareActiveEffectCategories,
 } from '../helpers/effects.mjs';
+import { rollDicePool, SKILL_THRESHOLD } from '../helpers/dice.mjs';
 
 /**
  * Extend the basic ActorSheet for Zombicide Chronicles.
@@ -153,29 +154,21 @@ export class ZombicideActorSheet extends ActorSheet {
       }
     }
 
-    if (dataset.roll) {
-      const roll = new Roll(dataset.roll, this.actor.getRollData());
-      await roll.evaluate();
+    // Attribute checks are skill rolls: only a natural 6 succeeds.
+    if (dataset.attribute) {
+      const attributeKey = dataset.attribute;
+      const pool = this.actor.system.attributes?.[attributeKey]?.value ?? 1;
+      const label =
+        dataset.label ??
+        game.i18n.localize(`ZOMBICIDE.Attribute.${attributeKey.capitalize()}`);
 
-      const diceResults = roll.dice[0]?.results.filter(r => r.active) ?? [];
-      const hits = diceResults.filter(r => r.result >= 4).length;
-      const ones = diceResults.filter(r => r.result === 1).length;
-
-      const label = dataset.label ?? '';
-      const hitsText = `${hits} ${game.i18n.localize('ZOMBICIDE.Roll.Hits')}`;
-      const onesText = ones > 0
-        ? ` | ${ones} ${game.i18n.localize('ZOMBICIDE.Roll.Ones')}`
-        : '';
-      const flavor = label
-        ? `<strong>${label}</strong> — ${hitsText}${onesText}`
-        : `${hitsText}${onesText}`;
-
-      await roll.toMessage({
+      return rollDicePool({
+        pool,
+        threshold: SKILL_THRESHOLD,
+        title: `${game.i18n.localize('ZOMBICIDE.Roll.SkillCheck')} — ${label}`,
+        subtitle: `${pool}d6 · ≥${SKILL_THRESHOLD}`,
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor,
-        rollMode: game.settings.get('core', 'rollMode'),
       });
-      return roll;
     }
   }
 }
