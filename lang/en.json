@@ -4,6 +4,14 @@
       "Actor": "Zombicide Actor Sheet",
       "Item": "Zombicide Item Sheet"
     },
+    "Resource": {
+      "Health": "Health",
+      "HealthFormula": "Muscles + Guts",
+      "Stress": "Stress",
+      "StressFormula": "(Brain + Guts) × 2",
+      "Experience": "XP",
+      "Danger": "Danger"
+    },
     "DangerLevel": {
       "Blue": "Blue",
       "Yellow": "Yellow",

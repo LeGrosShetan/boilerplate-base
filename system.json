@@ -47,5 +47,6 @@
   "background": "systems/zombicide-chronicles/assets/anvil-impact.png",
   "gridDistance": 5,
   "gridUnits": "m",
-  "primaryTokenAttribute": "health"
+  "primaryTokenAttribute": "health",
+  "secondaryTokenAttribute": "stress"
 }

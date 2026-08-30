@@ -4,6 +4,14 @@
       "Actor": "Fiche Zombicide Chronicles",
       "Item": "Objet Zombicide Chronicles"
     },
+    "Resource": {
+      "Health": "Santé",
+      "HealthFormula": "Muscles + Tripes",
+      "Stress": "Stress",
+      "StressFormula": "(Cerveau + Tripes) × 2",
+      "Experience": "XP",
+      "Danger": "Danger"
+    },
     "DangerLevel": {
       "Blue": "Bleu",
       "Yellow": "Jaune",

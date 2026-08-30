@@ -19,6 +19,13 @@ export default class SurvivorData extends ZombicideActorBase {
 
     schema.experience = new fields.NumberField({ ...int, initial: 0, min: 0 });
 
+    // max is always recomputed in prepareDerivedData; it is kept in the schema
+    // so Foundry lists stress as a token bar candidate.
+    schema.stress = new fields.SchemaField({
+      value: new fields.NumberField({ ...int, initial: 0, min: 0 }),
+      max: new fields.NumberField({ ...int, initial: 0 }),
+    });
+
     // Core attributes used for skill checks (d6 dice pool)
     schema.attributes = new fields.SchemaField({
       muscles: new fields.SchemaField({
@@ -36,6 +43,11 @@ export default class SurvivorData extends ZombicideActorBase {
   }
 
   prepareDerivedData() {
+    // Health and stress capacities are dictated by the attributes
+    const { muscles, cerveau, tripes } = this.attributes;
+    this.health.max = muscles.value + tripes.value;
+    this.stress.max = (cerveau.value + tripes.value) * 2;
+
     // Derive the current danger level from experience
     const bracket = DANGER_THRESHOLDS.find((b) => this.experience >= b.min);
     this.dangerLevel = bracket?.level ?? 'blue';

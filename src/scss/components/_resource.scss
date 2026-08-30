@@ -1,3 +1,15 @@
 .resource-label {
   font-weight: bold;
 }
+
+// Derived maximum shown next to an editable value (health, stress).
+// Sized like the input it replaces so the pair stays aligned.
+.resource-max {
+  flex: 0 0 auto;
+  min-width: 26px;
+  padding: 1px 3px;
+  text-align: center;
+  font-weight: bold;
+  color: $c-tan;
+  cursor: help;
+}
