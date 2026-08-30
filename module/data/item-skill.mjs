@@ -9,13 +9,11 @@ export default class SkillData extends ZombicideItemBase {
     schema.dangerLevel = new fields.StringField({
       required: true,
       initial: 'blue',
-      choices: ['blue', 'yellow', 'orange', 'red'],
     });
 
     schema.actionType = new fields.StringField({
       required: true,
       initial: 'passive',
-      choices: ['passive', 'active', 'free'],
     });
 
     // Optional: the attribute this skill uses for rolls

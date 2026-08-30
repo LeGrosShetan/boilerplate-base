@@ -37,7 +37,8 @@
     "Roll": {
       "Hits": "touches",
       "Hit": "Touché !",
-      "Miss": "Raté"
+      "Miss": "Raté",
+      "Ones": "×1"
     },
     "Effect": {
       "Source": "Source",

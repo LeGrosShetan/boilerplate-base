@@ -1,0 +1,15 @@
+{
+  "Actor": {
+    "types": ["survivor", "zombie"],
+    "templates": {},
+    "survivor": {},
+    "zombie": {}
+  },
+  "Item": {
+    "types": ["weapon", "equipment", "skill"],
+    "templates": {},
+    "weapon": {},
+    "equipment": {},
+    "skill": {}
+  }
+}

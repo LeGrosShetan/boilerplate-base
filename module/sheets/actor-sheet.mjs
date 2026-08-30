@@ -140,7 +140,7 @@ export class ZombicideActorSheet extends ActorSheet {
     return await Item.create(itemData, { parent: this.actor });
   }
 
-  _onRoll(event) {
+  async _onRoll(event) {
     event.preventDefault();
     const element = event.currentTarget;
     const dataset = element.dataset;
@@ -154,11 +154,25 @@ export class ZombicideActorSheet extends ActorSheet {
     }
 
     if (dataset.roll) {
-      let label = dataset.label ? `[ability] ${dataset.label}` : '';
-      let roll = new Roll(dataset.roll, this.actor.getRollData());
-      roll.toMessage({
+      const roll = new Roll(dataset.roll, this.actor.getRollData());
+      await roll.evaluate();
+
+      const diceResults = roll.dice[0]?.results.filter(r => r.active) ?? [];
+      const hits = diceResults.filter(r => r.result >= 4).length;
+      const ones = diceResults.filter(r => r.result === 1).length;
+
+      const label = dataset.label ?? '';
+      const hitsText = `${hits} ${game.i18n.localize('ZOMBICIDE.Roll.Hits')}`;
+      const onesText = ones > 0
+        ? ` | ${ones} ${game.i18n.localize('ZOMBICIDE.Roll.Ones')}`
+        : '';
+      const flavor = label
+        ? `<strong>${label}</strong> — ${hitsText}${onesText}`
+        : `${hitsText}${onesText}`;
+
+      await roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label,
+        flavor,
         rollMode: game.settings.get('core', 'rollMode'),
       });
       return roll;

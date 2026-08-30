@@ -47,23 +47,25 @@ export class ZombicideItem extends Item {
     const actor = this.actor;
     const linkedAttr = this.system.linkedAttribute || 'muscles';
     const attrValue = actor.system.attributes?.[linkedAttr]?.value ?? 1;
-    const accuracy = this.system.accuracy;
+    const accuracy = this.system.accuracy ?? 4;
     const attrLabel = game.i18n.localize(`ZOMBICIDE.Attribute.${linkedAttr.capitalize()}`);
 
-    // cs>=4 instructs Foundry to count each die ≥ 4 as one success
-    const roll = new Roll(`${attrValue}d6cs>=4`);
+    const roll = new Roll(`${attrValue}d6`);
     await roll.evaluate();
 
-    const hits = roll.total;
-    const success = hits >= accuracy;
-    const resultKey = success ? 'ZOMBICIDE.Roll.Hit' : 'ZOMBICIDE.Roll.Miss';
+    const diceResults = roll.dice[0]?.results.filter(r => r.active) ?? [];
+    const hits = diceResults.filter(r => r.result >= accuracy).length;
+    const ones = diceResults.filter(r => r.result === 1).length;
+
+    const onesText = ones > 0
+      ? ` | ${ones} ${game.i18n.localize('ZOMBICIDE.Roll.Ones')}`
+      : '';
 
     await roll.toMessage({
       speaker,
       rollMode,
-      flavor: `<strong>${this.name}</strong> (${attrLabel}) — `
-        + `${hits} / ${accuracy} ${game.i18n.localize('ZOMBICIDE.Roll.Hits')} `
-        + `→ <strong>${game.i18n.localize(resultKey)}</strong>`,
+      flavor: `<strong>${this.name}</strong> (${attrLabel}, ≥${accuracy}) — `
+        + `${hits} ${game.i18n.localize('ZOMBICIDE.Roll.Hits')}${onesText}`,
     });
 
     return roll;
