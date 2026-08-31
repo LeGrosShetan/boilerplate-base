@@ -18,10 +18,22 @@
       "Orange": "Orange",
       "Red": "Rouge"
     },
+    "Label": {
+      "Aptitudes": "Aptitudes",
+      "AttackAction": "Action d'attaque"
+    },
     "Attribute": {
       "Muscles": "Muscles",
       "Cerveau": "Cerveau",
       "Tripes": "Tripes"
+    },
+    "Aptitude": {
+      "Athletics": "Physique",
+      "Attitude": "Attitude",
+      "Background": "Vécu",
+      "Combat": "Combat",
+      "Perception": "Perception",
+      "Survival": "Survie"
     },
     "ZombieType": {
       "Walker": "Rôdeur",
@@ -35,6 +47,28 @@
         "Ranged": "À distance"
       }
     },
+    "Action": {
+      "Name": {
+        "Stunt": "Prouesse",
+        "Sneak": "Discrétion",
+        "Endure": "Endurance",
+        "Appeal": "Séduction",
+        "Convince": "Persuasion",
+        "Hearten": "Réconfort",
+        "Security": "Sécurité",
+        "Education": "Éducation",
+        "Contacts": "Contacts",
+        "Fight": "Corps-à-corps",
+        "Shoot": "Tir",
+        "Cool": "Sang-froid",
+        "Spot": "Détection",
+        "Evaluate": "Déduction",
+        "Scout": "Repérage",
+        "Scavenge": "Pillage",
+        "Tinker": "Bricolage",
+        "Heal": "Guérison"
+      }
+    },
     "Skill": {
       "ActionType": {
         "Passive": "Passif",
@@ -44,7 +78,7 @@
     },
     "Roll": {
       "Attack": "Attaque",
-      "SkillCheck": "Test de compétence",
+      "ActionCheck": "Test d'action",
       "Successes": "Réussites",
       "Recoverable": "Rattrapables",
       "Failures": "Échecs"

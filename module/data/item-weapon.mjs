@@ -19,11 +19,11 @@ export default class WeaponData extends ZombicideItemBase {
     schema.rangeMin = new fields.NumberField({ ...int, initial: 0, min: 0 });
     schema.rangeMax = new fields.NumberField({ ...int, initial: 0, min: 0 });
 
-    // Attribute used for the attack roll (muscles / cerveau / tripes)
-    schema.linkedAttribute = new fields.StringField({
+    // Action rolled to attack with this weapon (typically Fight or Shoot).
+    // Its pool already combines the attribute and the aptitude.
+    schema.linkedAction = new fields.StringField({
       required: true,
-      initial: 'muscles',
-      choices: ['muscles', 'cerveau', 'tripes'],
+      initial: 'fight',
     });
 
     schema.noise = new fields.NumberField({ ...int, initial: 0, min: 0 });

@@ -16,13 +16,6 @@ export default class SkillData extends ZombicideItemBase {
       initial: 'passive',
     });
 
-    // Optional: the attribute this skill uses for rolls
-    schema.linkedAttribute = new fields.StringField({
-      required: false,
-      blank: true,
-      initial: '',
-    });
-
     return schema;
   }
 

@@ -1,4 +1,5 @@
 import ZombicideActorBase from './base-actor.mjs';
+import { ZOMBICIDE } from '../helpers/config.mjs';
 
 /**
  * Danger level brackets, highest first so the first match wins:
@@ -26,7 +27,8 @@ export default class SurvivorData extends ZombicideActorBase {
       max: new fields.NumberField({ ...int, initial: 0 }),
     });
 
-    // Core attributes used for skill checks (d6 dice pool)
+    // The two halves of every action pool. Actions themselves hold no points:
+    // they are derived from one attribute plus one aptitude.
     schema.attributes = new fields.SchemaField({
       muscles: new fields.SchemaField({
         value: new fields.NumberField({ ...int, initial: 3, min: 1 }),
@@ -38,6 +40,17 @@ export default class SurvivorData extends ZombicideActorBase {
         value: new fields.NumberField({ ...int, initial: 3, min: 1 }),
       }),
     });
+
+    schema.aptitudes = new fields.SchemaField(
+      Object.fromEntries(
+        Object.keys(ZOMBICIDE.aptitudes).map((key) => [
+          key,
+          new fields.SchemaField({
+            value: new fields.NumberField({ ...int, initial: 1, min: 0 }),
+          }),
+        ])
+      )
+    );
 
     return schema;
   }
@@ -55,11 +68,43 @@ export default class SurvivorData extends ZombicideActorBase {
       `ZOMBICIDE.DangerLevel.${this.dangerLevel.capitalize()}`
     );
 
-    // Localize attribute labels
+    // Localize attribute and aptitude labels
     for (const key of Object.keys(this.attributes)) {
-      this.attributes[key].label =
-        game.i18n.localize(`ZOMBICIDE.Attribute.${key.capitalize()}`) ?? key;
+      this.attributes[key].label = game.i18n.localize(
+        `ZOMBICIDE.Attribute.${key.capitalize()}`
+      );
     }
+    for (const key of Object.keys(this.aptitudes)) {
+      this.aptitudes[key].label = game.i18n.localize(ZOMBICIDE.aptitudes[key]);
+    }
+
+    this.actions = this.#deriveActions();
+  }
+
+  /**
+   * Build the 18 actions from the aptitude × attribute grid. An action holds no
+   * points of its own: its pool is the sum of the two stats it sits between.
+   * @returns {Object<string, object>} Action key → derived action data.
+   */
+  #deriveActions() {
+    const actions = {};
+
+    for (const [key, def] of Object.entries(ZOMBICIDE.actions)) {
+      const attribute = this.attributes[def.attribute];
+      const aptitude = this.aptitudes[def.aptitude];
+
+      actions[key] = {
+        key,
+        attribute: def.attribute,
+        aptitude: def.aptitude,
+        label: game.i18n.localize(def.labelKey),
+        attributeLabel: attribute.label,
+        aptitudeLabel: aptitude.label,
+        pool: attribute.value + aptitude.value,
+      };
+    }
+
+    return actions;
   }
 
   getRollData() {
@@ -67,6 +112,9 @@ export default class SurvivorData extends ZombicideActorBase {
     for (const [key, attr] of Object.entries(this.attributes)) {
       data[key] = foundry.utils.deepClone(attr);
     }
+    data.attributes = foundry.utils.deepClone(this.attributes);
+    data.aptitudes = foundry.utils.deepClone(this.aptitudes);
+    data.actions = foundry.utils.deepClone(this.actions);
     data.dangerLevel = this.dangerLevel;
     data.experience = this.experience;
     return data;

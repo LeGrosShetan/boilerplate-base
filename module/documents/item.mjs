@@ -1,4 +1,4 @@
-import { rollDicePool, SKILL_THRESHOLD } from '../helpers/dice.mjs';
+import { rollDicePool } from '../helpers/dice.mjs';
 
 /**
  * Extend the basic Item for Zombicide Chronicles.
@@ -19,77 +19,69 @@ export class ZombicideItem extends Item {
   }
 
   /**
-   * Handle clickable rolls.
-   * Weapons roll an attack pool against their accuracy; skills bound to an
-   * attribute roll a skill check. Anything else posts its description to chat.
+   * Handle clickable items.
+   * Weapons roll their attack action against the weapon's accuracy.
+   * Everything else — skills included — just posts its description to chat.
    */
   async roll() {
     const actor = this.actor;
     const speaker = ChatMessage.getSpeaker({ actor });
     const rollMode = game.settings.get('core', 'rollMode');
 
-    if (actor && this.type === 'weapon') {
+    if (actor && this.type === 'weapon' && this._linkedAction) {
       return this._rollWeaponAttack(speaker, rollMode);
     }
 
-    if (actor && this.type === 'skill' && this.system.linkedAttribute) {
-      return this._rollSkillCheck(speaker, rollMode);
-    }
-
-    // Fallback: post item description
-    ChatMessage.create({
-      speaker,
-      rollMode,
-      flavor: `[${this.type}] ${this.name}`,
-      content: this.system.description ?? '',
-    });
+    return this._postDescription(speaker, rollMode);
   }
 
   /**
-   * Attack roll: [linked attribute]d6, each die ≥ accuracy is a success.
+   * The derived action this weapon attacks with, if the owner has one.
+   * @returns {object|undefined}
+   * @private
+   */
+  get _linkedAction() {
+    const key = this.system.linkedAction;
+    if (!key) return undefined;
+    return this.actor?.system?.actions?.[key];
+  }
+
+  /**
+   * Attack roll: the linked action's pool, each die ≥ accuracy is a success.
    * @private
    */
   async _rollWeaponAttack(speaker, rollMode) {
-    const linkedAttr = this.system.linkedAttribute || 'muscles';
-    const pool = this.actor.system.attributes?.[linkedAttr]?.value ?? 1;
+    const action = this._linkedAction;
     const threshold = this.system.accuracy ?? 4;
 
     return rollDicePool({
-      pool,
+      pool: action.pool,
       threshold,
       title: `${game.i18n.localize('ZOMBICIDE.Roll.Attack')} — ${this.name}`,
-      subtitle: this._rollSubtitle(linkedAttr, pool, threshold),
+      subtitle: `${action.label} (${action.attributeLabel} + ${action.aptitudeLabel})`
+        + ` · ${action.pool}d6 · ≥${threshold}`,
       speaker,
       rollMode,
     });
   }
 
   /**
-   * Skill check: [linked attribute]d6, only a natural 6 is a success.
+   * Post the item's description to chat. This is how skills are "used": they
+   * carry rules text rather than a roll.
    * @private
    */
-  async _rollSkillCheck(speaker, rollMode) {
-    const linkedAttr = this.system.linkedAttribute;
-    const pool = this.actor.system.attributes?.[linkedAttr]?.value ?? 1;
+  async _postDescription(speaker, rollMode) {
+    const typeLabel = game.i18n.localize(`TYPES.Item.${this.type}`);
 
-    return rollDicePool({
-      pool,
-      threshold: SKILL_THRESHOLD,
-      title: `${game.i18n.localize('ZOMBICIDE.Roll.SkillCheck')} — ${this.name}`,
-      subtitle: this._rollSubtitle(linkedAttr, pool, SKILL_THRESHOLD),
+    return ChatMessage.create({
       speaker,
       rollMode,
+      flavor: `[${typeLabel}] ${this.name}`,
+      content: await TextEditor.enrichHTML(this.system.description ?? '', {
+        async: true,
+        rollData: this.getRollData(),
+        relativeTo: this,
+      }),
     });
-  }
-
-  /**
-   * "Muscles · 4d6 · ≥5" — describes the pool that was rolled.
-   * @private
-   */
-  _rollSubtitle(attributeKey, pool, threshold) {
-    const attrLabel = game.i18n.localize(
-      `ZOMBICIDE.Attribute.${attributeKey.capitalize()}`
-    );
-    return `${attrLabel} · ${pool}d6 · ≥${threshold}`;
   }
 }

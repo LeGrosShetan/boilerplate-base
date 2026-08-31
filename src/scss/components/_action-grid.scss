@@ -1,0 +1,95 @@
+﻿// --------------------------------------------------
+// Action grid: aptitudes (rows) Ã— attributes (columns).
+// Each cell is a derived action, clickable to roll.
+// --------------------------------------------------
+
+.action-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 8px;
+
+  .action-grid-row {
+    display: grid;
+    grid-template-columns: 116px repeat(3, 1fr);
+    gap: 3px;
+  }
+
+  // Row and column headers both hold an editable stat value
+  .action-grid-stat {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    padding: 2px 5px;
+    background: rgba(0, 0, 0, 0.05);
+    border: $border-groove;
+
+    label {
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: $c-dark;
+    }
+
+    input[type='text'] {
+      flex: 0 0 30px;
+      height: 22px;
+      padding: 0;
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid $c-beige;
+      border-radius: 3px;
+    }
+  }
+
+  .action-grid-corner {
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: $c-tan;
+    padding-left: 5px;
+  }
+
+  // A single skill: its pool, then its name
+  .action-cell {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 6px;
+    border: 1px solid $c-faint;
+    border-radius: 3px;
+    color: $c-dark;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 80ms ease, border-color 80ms ease;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.06);
+      border-color: $c-tan;
+      text-shadow: none;
+    }
+
+    .action-pool {
+      flex: 0 0 22px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 1.2;
+    }
+
+    .action-name {
+      flex: 1;
+      font-size: 11px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+}

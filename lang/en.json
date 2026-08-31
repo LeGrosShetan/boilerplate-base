@@ -18,10 +18,22 @@
       "Orange": "Orange",
       "Red": "Red"
     },
+    "Label": {
+      "Aptitudes": "Aptitudes",
+      "AttackAction": "Attack Action"
+    },
     "Attribute": {
-      "Muscles": "Muscles",
-      "Cerveau": "Brain",
-      "Tripes": "Guts"
+      "Muscles": "Muscle",
+      "Cerveau": "Brains",
+      "Tripes": "Grit"
+    },
+    "Aptitude": {
+      "Athletics": "Athletics",
+      "Attitude": "Attitude",
+      "Background": "Background",
+      "Combat": "Combat",
+      "Perception": "Perception",
+      "Survival": "Survival"
     },
     "ZombieType": {
       "Walker": "Walker",
@@ -35,6 +47,28 @@
         "Ranged": "Ranged"
       }
     },
+    "Action": {
+      "Name": {
+        "Stunt": "Stunt",
+        "Sneak": "Sneak",
+        "Endure": "Endure",
+        "Appeal": "Appeal",
+        "Convince": "Convince",
+        "Hearten": "Hearten",
+        "Security": "Security",
+        "Education": "Education",
+        "Contacts": "Contacts",
+        "Fight": "Fight",
+        "Shoot": "Shoot",
+        "Cool": "Cool",
+        "Spot": "Spot",
+        "Evaluate": "Evaluate",
+        "Scout": "Scout",
+        "Scavenge": "Scavenge",
+        "Tinker": "Tinker",
+        "Heal": "Heal"
+      }
+    },
     "Skill": {
       "ActionType": {
         "Passive": "Passive",
@@ -44,7 +78,7 @@
     },
     "Roll": {
       "Attack": "Attack",
-      "SkillCheck": "Skill check",
+      "ActionCheck": "Action check",
       "Successes": "Successes",
       "Recoverable": "Recoverable",
       "Failures": "Failures"

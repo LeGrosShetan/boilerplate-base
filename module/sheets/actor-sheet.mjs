@@ -2,7 +2,7 @@ import {
   onManageActiveEffect,
   prepareActiveEffectCategories,
 } from '../helpers/effects.mjs';
-import { rollDicePool, SKILL_THRESHOLD } from '../helpers/dice.mjs';
+import { rollDicePool, ACTION_THRESHOLD } from '../helpers/dice.mjs';
 
 /**
  * Extend the basic ActorSheet for Zombicide Chronicles.
@@ -71,8 +71,28 @@ export class ZombicideActorSheet extends ActorSheet {
    * @param {object} context
    */
   _prepareSurvivorData(context) {
-    context.dangerLevel = this.actor.system.dangerLevel;
-    context.dangerLevelLabel = this.actor.system.dangerLevelLabel;
+    const system = this.actor.system;
+
+    context.dangerLevel = system.dangerLevel;
+    context.dangerLevelLabel = system.dangerLevelLabel;
+
+    // Columns drive the cell order below, so the grid can never misalign.
+    const attributeKeys = Object.keys(CONFIG.ZOMBICIDE.attributes);
+
+    context.attributeColumns = attributeKeys.map((key) => ({
+      key,
+      label: system.attributes[key].label,
+      value: system.attributes[key].value,
+    }));
+
+    context.actionMatrix = Object.entries(CONFIG.ZOMBICIDE.actionMatrix).map(
+      ([aptitudeKey, row]) => ({
+        key: aptitudeKey,
+        label: system.aptitudes[aptitudeKey].label,
+        value: system.aptitudes[aptitudeKey].value,
+        cells: attributeKeys.map((attributeKey) => system.actions[row[attributeKey]]),
+      })
+    );
   }
 
   /**
@@ -162,19 +182,17 @@ export class ZombicideActorSheet extends ActorSheet {
       }
     }
 
-    // Attribute checks are skill rolls: only a natural 6 succeeds.
-    if (dataset.attribute) {
-      const attributeKey = dataset.attribute;
-      const pool = this.actor.system.attributes?.[attributeKey]?.value ?? 1;
-      const label =
-        dataset.label ??
-        game.i18n.localize(`ZOMBICIDE.Attribute.${attributeKey.capitalize()}`);
+    // Action checks roll attribute + aptitude; only a natural 6 succeeds.
+    if (dataset.action) {
+      const action = this.actor.system.actions?.[dataset.action];
+      if (!action) return;
 
       return rollDicePool({
-        pool,
-        threshold: SKILL_THRESHOLD,
-        title: `${game.i18n.localize('ZOMBICIDE.Roll.SkillCheck')} — ${label}`,
-        subtitle: `${pool}d6 · ≥${SKILL_THRESHOLD}`,
+        pool: action.pool,
+        threshold: ACTION_THRESHOLD,
+        title: `${game.i18n.localize('ZOMBICIDE.Roll.ActionCheck')} — ${action.label}`,
+        subtitle: `${action.attributeLabel} + ${action.aptitudeLabel}`
+          + ` · ${action.pool}d6 · ≥${ACTION_THRESHOLD}`,
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       });
     }

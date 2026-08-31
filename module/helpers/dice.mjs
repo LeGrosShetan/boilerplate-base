@@ -7,7 +7,7 @@
  *   - failure     : a natural 1, always a hard failure
  *
  * Only the threshold changes between roll kinds:
- *   - skill checks  → 6 (only a natural 6 succeeds)
+ *   - action checks  → 6 (only a natural 6 succeeds)
  *   - weapon attacks → the weapon's accuracy
  */
 
@@ -17,8 +17,8 @@ export const DIE_OUTCOME = {
   FAILURE: 'failure',
 };
 
-/** Only a natural 6 succeeds on a skill check. */
-export const SKILL_THRESHOLD = 6;
+/** Only a natural 6 succeeds on an action check. */
+export const ACTION_THRESHOLD = 6;
 
 /**
  * Classify a single die result.

@@ -62,25 +62,42 @@
 
     {{!-- Skills Tab --}}
     <div class="tab" data-group="primary" data-tab="skills">
-      <section class="grid grid-3col">
-        <aside class="sidebar">
-          <div class="attributes flexcol">
-            {{#each system.attributes as |attr key|}}
-            <div class="attribute flexrow flex-group-center">
-              <label class="resource-label rollable flexlarge align-left"
-                data-attribute="{{key}}"
-                data-label="{{localize (lookup @root.config.attributes key)}}">
-                {{localize (lookup @root.config.attributes key)}}
-              </label>
-              <input type="text" name="system.attributes.{{key}}.value" value="{{attr.value}}" data-dtype="Number"/>
-            </div>
-            {{/each}}
+
+      {{!-- Attributes (columns) × aptitudes (rows). Each cell is a derived
+            action: its pool is the sum of the two stats it sits between. --}}
+      <div class="action-grid">
+
+        <div class="action-grid-row action-grid-head">
+          <div class="action-grid-corner">{{localize "ZOMBICIDE.Label.Aptitudes"}}</div>
+          {{#each attributeColumns as |col|}}
+          <div class="action-grid-stat">
+            <label for="attr-{{col.key}}">{{col.label}}</label>
+            <input id="attr-{{col.key}}" type="text" name="system.attributes.{{col.key}}.value"
+              value="{{col.value}}" data-dtype="Number"/>
           </div>
-        </aside>
-        <section class="main grid-span-2">
-          {{> "systems/zombicide-chronicles/templates/actor/parts/actor-skills.hbs"}}
-        </section>
-      </section>
+          {{/each}}
+        </div>
+
+        {{#each actionMatrix as |row|}}
+        <div class="action-grid-row">
+          <div class="action-grid-stat action-grid-aptitude">
+            <label for="apt-{{row.key}}">{{row.label}}</label>
+            <input id="apt-{{row.key}}" type="text" name="system.aptitudes.{{row.key}}.value"
+              value="{{row.value}}" data-dtype="Number"/>
+          </div>
+          {{#each row.cells as |action|}}
+          <a class="action-cell rollable" data-action="{{action.key}}"
+            title="{{action.attributeLabel}} + {{action.aptitudeLabel}}">
+            <span class="action-pool">{{action.pool}}</span>
+            <span class="action-name">{{action.label}}</span>
+          </a>
+          {{/each}}
+        </div>
+        {{/each}}
+
+      </div>
+
+      {{> "systems/zombicide-chronicles/templates/actor/parts/actor-skills.hbs"}}
     </div>
 
     {{!-- Weapons Tab --}}

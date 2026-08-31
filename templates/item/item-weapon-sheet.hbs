@@ -63,9 +63,9 @@
         </div>
 
         <div class="resource flex-group-center">
-          <label class="resource-label">Attack Attribute</label>
-          <select name="system.linkedAttribute">
-            {{selectOptions config.attributes selected=system.linkedAttribute localize=true}}
+          <label class="resource-label">{{localize "ZOMBICIDE.Label.AttackAction"}}</label>
+          <select name="system.linkedAction">
+            {{selectOptions config.actionLabels selected=system.linkedAction localize=true}}
           </select>
         </div>
 
