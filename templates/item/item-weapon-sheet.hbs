@@ -45,13 +45,16 @@
         </div>
 
         <div class="resource flex-group-center">
-          <label class="resource-label">Accuracy (min hits)</label>
-          <input type="text" name="system.accuracy" value="{{system.accuracy}}" data-dtype="Number"/>
+          <label class="resource-label" title="{{localize 'ZOMBICIDE.Weapon.AccuracyHint'}}">
+            {{localize "ZOMBICIDE.Weapon.Accuracy"}}
+          </label>
+          <input type="text" name="system.accuracy" value="{{system.accuracy}}" data-dtype="Number"
+            title="{{localize 'ZOMBICIDE.Weapon.AccuracyHint'}}"/>
         </div>
 
         <div class="resource flex-group-center">
-          <label class="resource-label">Noise Tokens</label>
-          <input type="text" name="system.noise" value="{{system.noise}}" data-dtype="Number"/>
+          <label class="resource-label">{{localize "ZOMBICIDE.Weapon.Noise"}}</label>
+          <input type="checkbox" name="system.noise" {{checked system.noise}}/>
         </div>
 
         <div class="resource flex-group-center">

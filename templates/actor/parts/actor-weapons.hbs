@@ -1,9 +1,10 @@
 <ol class="items-list">
   <li class="item flexrow items-header">
     <div class="item-name">Weapon</div>
-    <div class="item-prop">Damage</div>
-    <div class="item-prop">Range</div>
-    <div class="item-prop">Noise</div>
+    <div class="item-prop">{{localize "ZOMBICIDE.Weapon.Damage"}}</div>
+    <div class="item-prop">{{localize "ZOMBICIDE.Weapon.Accuracy"}}</div>
+    <div class="item-prop">{{localize "ZOMBICIDE.Weapon.Range"}}</div>
+    <div class="item-prop">{{localize "ZOMBICIDE.Weapon.Noise"}}</div>
     <div class="item-controls">
       <a class="item-control item-create" data-type="weapon" title="Add Weapon">
         <i class="fas fa-plus"></i> Weapon
@@ -21,8 +22,15 @@
       <h4>{{item.name}}</h4>
     </div>
     <div class="item-prop">{{item.system.damage}}</div>
+    <div class="item-prop">≥{{item.system.accuracy}}</div>
     <div class="item-prop">{{item.system.rangeMin}} – {{item.system.rangeMax}}</div>
-    <div class="item-prop">{{item.system.noise}}</div>
+    <div class="item-prop item-flag">
+      {{#if item.system.noise}}
+      <i class="fas fa-check" title="{{localize 'ZOMBICIDE.Weapon.Noisy'}}"></i>
+      {{else}}
+      <i class="fas fa-minus faint" title="{{localize 'ZOMBICIDE.Weapon.Silent'}}"></i>
+      {{/if}}
+    </div>
     <div class="item-controls">
       <a class="item-control item-edit" title="Edit"><i class="fas fa-edit"></i></a>
       <a class="item-control item-delete" title="Delete"><i class="fas fa-trash"></i></a>

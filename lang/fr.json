@@ -52,6 +52,13 @@
       "Abomination": "Abomination"
     },
     "Weapon": {
+      "Damage": "Dégâts",
+      "Accuracy": "Précision",
+      "AccuracyHint": "Valeur minimale d'un dé pour compter comme une touche",
+      "Range": "Portée",
+      "Noise": "Bruit",
+      "Noisy": "Fait du bruit",
+      "Silent": "Silencieuse",
       "Type": {
         "Melee": "Mêlée",
         "Ranged": "À distance"

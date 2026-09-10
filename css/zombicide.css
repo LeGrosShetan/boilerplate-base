@@ -460,6 +460,12 @@
   font-size: 12px;
   padding: 0 4px;
 }
+.zombicide .items-list .item-flag {
+  flex: 0 0 52px;
+}
+.zombicide .items-list .item-flag .faint {
+  color: #c9c7b8;
+}
 .zombicide .items-list .items-header {
   height: 28px;
   margin: 2px 0;

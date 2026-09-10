@@ -8,6 +8,23 @@ import {
  * @extends {ItemSheet}
  */
 export class ZombicideItemSheet extends ItemSheet {
+  /**
+   * Item types that should open on a tab other than the default one.
+   * @type {Object<string, string>}
+   */
+  static INITIAL_TAB = {
+    weapon: 'attributes',
+  };
+
+  constructor(...args) {
+    super(...args);
+
+    // defaultOptions is static and cannot see the item type, so the opening
+    // tab is picked here — once per sheet, leaving later user choices alone.
+    const initial = ZombicideItemSheet.INITIAL_TAB[this.item.type];
+    if (initial) for (const tab of this._tabs) tab.active = initial;
+  }
+
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {

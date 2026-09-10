@@ -26,12 +26,13 @@ export default class WeaponData extends ZombicideItemBase {
       initial: 'fight',
     });
 
-    schema.noise = new fields.NumberField({ ...int, initial: 0, min: 0 });
+    // Whether firing/swinging this weapon draws zombies
+    schema.noise = new fields.BooleanField({ required: true, initial: false });
 
     schema.hands = new fields.NumberField({ ...int, initial: 1, min: 1, max: 2 });
 
-    // Minimum number of dice required to hit
-    schema.accuracy = new fields.NumberField({ ...int, initial: 4, min: 1 });
+    // Minimum value a die must show to count as a hit
+    schema.accuracy = new fields.NumberField({ ...int, initial: 4, min: 1, max: 6 });
 
     return schema;
   }

@@ -52,6 +52,13 @@
       "Abomination": "Abomination"
     },
     "Weapon": {
+      "Damage": "Damage",
+      "Accuracy": "Accuracy",
+      "AccuracyHint": "Minimum value a die must show to count as a hit",
+      "Range": "Range",
+      "Noise": "Noise",
+      "Noisy": "Makes noise",
+      "Silent": "Silent",
       "Type": {
         "Melee": "Melee",
         "Ranged": "Ranged"

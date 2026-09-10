@@ -94,6 +94,15 @@
     padding: 0 4px;
   }
 
+  // Boolean column: an icon needs far less room than a value
+  .item-flag {
+    flex: 0 0 52px;
+
+    .faint {
+      color: $c-faint;
+    }
+  }
+
   // Section Header
   .items-header {
     height: 28px;
