@@ -22,6 +22,16 @@
       "Aptitudes": "Aptitudes",
       "AttackAction": "Action d'attaque"
     },
+    "Dialog": {
+      "BasePool": "Pool de base",
+      "Modifier": "Modificateur",
+      "TotalPool": "Dés lancés",
+      "AddDie": "Ajouter un dé",
+      "RemoveDie": "Retirer un dé",
+      "SuccessOn": "Réussite sur",
+      "Roll": "Lancer",
+      "Cancel": "Annuler"
+    },
     "Attribute": {
       "Muscles": "Muscles",
       "Cerveau": "Cerveau",

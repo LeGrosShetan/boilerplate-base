@@ -2,7 +2,11 @@ import {
   onManageActiveEffect,
   prepareActiveEffectCategories,
 } from '../helpers/effects.mjs';
-import { rollDicePool, ACTION_THRESHOLD } from '../helpers/dice.mjs';
+import {
+  rollDicePool,
+  promptPoolModifier,
+  ACTION_THRESHOLD,
+} from '../helpers/dice.mjs';
 
 /**
  * Extend the basic ActorSheet for Zombicide Chronicles.
@@ -174,11 +178,14 @@ export class ZombicideActorSheet extends ActorSheet {
     const element = event.currentTarget;
     const dataset = element.dataset;
 
+    // Shift-click rolls straight away, skipping the modifier dialog.
+    const skipDialog = event.shiftKey;
+
     if (dataset.rollType) {
       if (dataset.rollType === 'item') {
         const itemId = element.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
-        if (item) return item.roll();
+        if (item) return item.roll({ skipDialog });
       }
     }
 
@@ -187,12 +194,26 @@ export class ZombicideActorSheet extends ActorSheet {
       const action = this.actor.system.actions?.[dataset.action];
       if (!action) return;
 
+      const title = `${game.i18n.localize('ZOMBICIDE.Roll.ActionCheck')} — ${action.label}`;
+      const context = `${action.attributeLabel} + ${action.aptitudeLabel}`;
+
+      let modifier = 0;
+      if (!skipDialog) {
+        modifier = await promptPoolModifier({
+          title,
+          context,
+          pool: action.pool,
+          threshold: ACTION_THRESHOLD,
+        });
+        if (modifier === null) return;
+      }
+
       return rollDicePool({
         pool: action.pool,
+        modifier,
         threshold: ACTION_THRESHOLD,
-        title: `${game.i18n.localize('ZOMBICIDE.Roll.ActionCheck')} — ${action.label}`,
-        subtitle: `${action.attributeLabel} + ${action.aptitudeLabel}`
-          + ` · ${action.pool}d6 · ≥${ACTION_THRESHOLD}`,
+        title,
+        context,
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       });
     }

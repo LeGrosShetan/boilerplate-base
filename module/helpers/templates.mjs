@@ -12,5 +12,7 @@ export const preloadHandlebarsTemplates = async function () {
     'systems/zombicide-chronicles/templates/actor/parts/actor-effects.hbs',
     // Item partials
     'systems/zombicide-chronicles/templates/item/parts/item-effects.hbs',
+    // Dialogs
+    'systems/zombicide-chronicles/templates/dialog/roll-modifier.hbs',
   ]);
 };

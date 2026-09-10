@@ -95,30 +95,123 @@ export function formatRollFlavor({ title, subtitle, tally }) {
     </div>`;
 }
 
+/** A pool never drops below a single die, however harsh the modifier. */
+export const MIN_POOL = 1;
+
+/**
+ * Apply a modifier to a base pool, floored at MIN_POOL.
+ * @param {number} pool
+ * @param {number} modifier
+ * @returns {number}
+ */
+export function effectivePool(pool, modifier = 0) {
+  return Math.max(MIN_POOL, (pool || 0) + modifier);
+}
+
+/**
+ * "5 − 2 = 3d6", or just "5d6" when unmodified.
+ * @param {number} pool
+ * @param {number} modifier
+ * @returns {string}
+ */
+function formatPool(pool, modifier) {
+  const size = effectivePool(pool, modifier);
+  if (!modifier) return `${size}d6`;
+  const sign = modifier > 0 ? '+' : '−';
+  return `${pool} ${sign} ${Math.abs(modifier)} = ${size}d6`;
+}
+
+/**
+ * Ask the player how many dice to add or remove before rolling.
+ * @param {object} options
+ * @param {string} options.title     Dialog title.
+ * @param {string} [options.context] What is being rolled ("Fight (Muscle + Combat)").
+ * @param {number} options.pool      Base pool, before any modifier.
+ * @param {number} options.threshold Success threshold, shown for reference.
+ * @returns {Promise<number|null>} The chosen modifier, or null if cancelled.
+ */
+export async function promptPoolModifier({ title, context, pool, threshold }) {
+  const content = await renderTemplate(
+    'systems/zombicide-chronicles/templates/dialog/roll-modifier.hbs',
+    { context, pool, threshold }
+  );
+
+  return new Promise((resolve) => {
+    new Dialog(
+      {
+        title,
+        content,
+        default: 'roll',
+        buttons: {
+          roll: {
+            icon: '<i class="fas fa-dice-d6"></i>',
+            label: game.i18n.localize('ZOMBICIDE.Dialog.Roll'),
+            callback: (html) => {
+              const raw = html.find('[name="modifier"]').val();
+              resolve(Number.parseInt(raw, 10) || 0);
+            },
+          },
+          cancel: {
+            icon: '<i class="fas fa-times"></i>',
+            label: game.i18n.localize('ZOMBICIDE.Dialog.Cancel'),
+            callback: () => resolve(null),
+          },
+        },
+        // Already-settled promises ignore this, so it only catches the X button
+        close: () => resolve(null),
+        render: (html) => {
+          const input = html.find('[name="modifier"]');
+          const total = html.find('.total-pool');
+
+          const refresh = () => {
+            const modifier = Number.parseInt(input.val(), 10) || 0;
+            total.text(`${effectivePool(pool, modifier)}d6`);
+          };
+
+          html.find('[data-step]').on('click', (event) => {
+            const step = Number(event.currentTarget.dataset.step);
+            input.val((Number.parseInt(input.val(), 10) || 0) + step);
+            refresh();
+          });
+
+          input.on('input', refresh);
+          input.trigger('focus').trigger('select');
+        },
+      },
+      { classes: ['zombicide', 'dialog', 'roll-modifier-dialog'] }
+    ).render(true);
+  });
+}
+
 /**
  * Roll a d6 pool, classify it, and post the result to chat.
  * @param {object} options
- * @param {number} options.pool       Number of d6 to roll.
+ * @param {number} options.pool       Base number of d6, before the modifier.
+ * @param {number} [options.modifier] Dice added (+) or removed (−) by the player.
  * @param {number} options.threshold  Minimum value counting as a success.
  * @param {string} options.title      Main flavor line.
- * @param {string} [options.subtitle] Secondary flavor line.
+ * @param {string} [options.context]  What is being rolled; the pool maths and
+ *                                    threshold are appended to it.
  * @param {object} options.speaker    ChatMessage speaker data.
  * @param {string} [options.rollMode] Roll mode; defaults to the core setting.
  * @returns {Promise<{roll: Roll, tally: object}>}
  */
 export async function rollDicePool({
   pool,
+  modifier = 0,
   threshold,
   title,
-  subtitle,
+  context,
   speaker,
   rollMode = game.settings.get('core', 'rollMode'),
 }) {
-  const size = Math.max(1, pool || 1);
-  const roll = new Roll(`${size}d6`);
+  const roll = new Roll(`${effectivePool(pool, modifier)}d6`);
   await roll.evaluate();
 
   const tally = analyzeDicePool(roll, threshold);
+  const subtitle = [context, formatPool(pool, modifier), `≥${threshold}`]
+    .filter(Boolean)
+    .join(' · ');
 
   await roll.toMessage({
     speaker,

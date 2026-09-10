@@ -1,4 +1,4 @@
-import { rollDicePool } from '../helpers/dice.mjs';
+import { rollDicePool, promptPoolModifier } from '../helpers/dice.mjs';
 
 /**
  * Extend the basic Item for Zombicide Chronicles.
@@ -22,14 +22,16 @@ export class ZombicideItem extends Item {
    * Handle clickable items.
    * Weapons roll their attack action against the weapon's accuracy.
    * Everything else — skills included — just posts its description to chat.
+   * @param {object} [options]
+   * @param {boolean} [options.skipDialog] Roll without prompting for a modifier.
    */
-  async roll() {
+  async roll({ skipDialog = false } = {}) {
     const actor = this.actor;
     const speaker = ChatMessage.getSpeaker({ actor });
     const rollMode = game.settings.get('core', 'rollMode');
 
     if (actor && this.type === 'weapon' && this._linkedAction) {
-      return this._rollWeaponAttack(speaker, rollMode);
+      return this._rollWeaponAttack(speaker, rollMode, skipDialog);
     }
 
     return this._postDescription(speaker, rollMode);
@@ -50,16 +52,30 @@ export class ZombicideItem extends Item {
    * Attack roll: the linked action's pool, each die ≥ accuracy is a success.
    * @private
    */
-  async _rollWeaponAttack(speaker, rollMode) {
+  async _rollWeaponAttack(speaker, rollMode, skipDialog = false) {
     const action = this._linkedAction;
     const threshold = this.system.accuracy ?? 4;
+    const title = `${game.i18n.localize('ZOMBICIDE.Roll.Attack')} — ${this.name}`;
+    const context =
+      `${action.label} (${action.attributeLabel} + ${action.aptitudeLabel})`;
+
+    let modifier = 0;
+    if (!skipDialog) {
+      modifier = await promptPoolModifier({
+        title,
+        context,
+        pool: action.pool,
+        threshold,
+      });
+      if (modifier === null) return;
+    }
 
     return rollDicePool({
       pool: action.pool,
+      modifier,
       threshold,
-      title: `${game.i18n.localize('ZOMBICIDE.Roll.Attack')} — ${this.name}`,
-      subtitle: `${action.label} (${action.attributeLabel} + ${action.aptitudeLabel})`
-        + ` · ${action.pool}d6 · ≥${threshold}`,
+      title,
+      context,
       speaker,
       rollMode,
     });

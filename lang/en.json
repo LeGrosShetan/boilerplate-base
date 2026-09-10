@@ -22,6 +22,16 @@
       "Aptitudes": "Aptitudes",
       "AttackAction": "Attack Action"
     },
+    "Dialog": {
+      "BasePool": "Base pool",
+      "Modifier": "Modifier",
+      "TotalPool": "Dice rolled",
+      "AddDie": "Add a die",
+      "RemoveDie": "Remove a die",
+      "SuccessOn": "Success on",
+      "Roll": "Roll",
+      "Cancel": "Cancel"
+    },
     "Attribute": {
       "Muscles": "Muscle",
       "Cerveau": "Brains",

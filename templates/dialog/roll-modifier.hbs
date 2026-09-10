@@ -1,0 +1,30 @@
+<form class="roll-modifier">
+  {{#if context}}
+  <p class="roll-context">{{context}}</p>
+  {{/if}}
+
+  <div class="roll-modifier-fields">
+    <div class="field">
+      <label>{{localize "ZOMBICIDE.Dialog.BasePool"}}</label>
+      <span class="pool-value">{{pool}}</span>
+    </div>
+
+    <div class="field">
+      <label for="pool-modifier">{{localize "ZOMBICIDE.Dialog.Modifier"}}</label>
+      <div class="stepper">
+        <button type="button" class="step" data-step="-1"
+          title="{{localize 'ZOMBICIDE.Dialog.RemoveDie'}}">−</button>
+        <input type="number" name="modifier" id="pool-modifier" value="0" step="1"/>
+        <button type="button" class="step" data-step="1"
+          title="{{localize 'ZOMBICIDE.Dialog.AddDie'}}">+</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>{{localize "ZOMBICIDE.Dialog.TotalPool"}}</label>
+      <span class="pool-value total-pool">{{pool}}d6</span>
+    </div>
+  </div>
+
+  <p class="roll-hint">{{localize "ZOMBICIDE.Dialog.SuccessOn"}} ≥{{threshold}}</p>
+</form>
