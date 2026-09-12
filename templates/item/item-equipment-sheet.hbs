@@ -33,16 +33,8 @@
     <div class="tab attributes" data-group="primary" data-tab="attributes">
       <div class="grid grid-2col">
 
-        <div class="resource flex-group-center">
-          <label class="resource-label">Quantity</label>
-          <input type="text" name="system.quantity" value="{{system.quantity}}" data-dtype="Number"/>
-        </div>
-
-        <div class="resource flex-group-center">
-          <label class="resource-label">Inventory Slots</label>
-          <input type="text" name="system.slots" value="{{system.slots}}" data-dtype="Number"/>
-        </div>
-
+        {{!-- Quantity and slots live in the header: repeating them here would
+              submit two values for the same field. --}}
         <div class="resource flex-group-center grid-span-2">
           <label class="resource-label">
             <input type="checkbox" name="system.passive" {{#if system.passive}}checked{{/if}}/>

@@ -87,6 +87,8 @@
       }
     },
     "Skill": {
+      "UnlockedAt": "Unlocked At",
+      "ActionTypeLabel": "Action Type",
       "ActionType": {
         "Passive": "Passive",
         "Active": "Active",

@@ -7,13 +7,13 @@
       </h1>
       <div class="grid grid-2col">
         <div class="resource">
-          <label class="resource-label">Unlocked At</label>
+          <label class="resource-label">{{localize "ZOMBICIDE.Skill.UnlockedAt"}}</label>
           <select name="system.dangerLevel" class="danger-{{system.dangerLevel}}">
             {{selectOptions config.dangerLevels selected=system.dangerLevel localize=true}}
           </select>
         </div>
         <div class="resource">
-          <label class="resource-label">Action Type</label>
+          <label class="resource-label">{{localize "ZOMBICIDE.Skill.ActionTypeLabel"}}</label>
           <select name="system.actionType">
             {{selectOptions config.skillActionTypes selected=system.actionType localize=true}}
           </select>
@@ -22,9 +22,10 @@
     </div>
   </header>
 
+  {{!-- Danger level and action type live in the header: repeating them in a
+        tab would submit two values for the same field. --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
-    <a class="item" data-tab="attributes">Attributes</a>
     <a class="item" data-tab="effects">Effects</a>
   </nav>
 
@@ -32,26 +33,6 @@
 
     <div class="tab" data-group="primary" data-tab="description">
       {{editor enrichedDescription target="system.description" engine="prosemirror" button=true editable=editable}}
-    </div>
-
-    <div class="tab attributes" data-group="primary" data-tab="attributes">
-      <div class="grid grid-2col">
-
-        <div class="resource flex-group-center">
-          <label class="resource-label">Danger Level</label>
-          <select name="system.dangerLevel" class="danger-{{system.dangerLevel}}">
-            {{selectOptions config.dangerLevels selected=system.dangerLevel localize=true}}
-          </select>
-        </div>
-
-        <div class="resource flex-group-center">
-          <label class="resource-label">Action Type</label>
-          <select name="system.actionType">
-            {{selectOptions config.skillActionTypes selected=system.actionType localize=true}}
-          </select>
-        </div>
-
-      </div>
     </div>
 
     <div class="tab effects" data-group="primary" data-tab="effects">
