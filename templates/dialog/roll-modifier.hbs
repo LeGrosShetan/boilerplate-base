@@ -1,4 +1,5 @@
-<form class="roll-modifier">
+{{!-- DialogV2 wraps this in its own <form>; a nested one would be invalid --}}
+<div class="roll-modifier">
   {{#if context}}
   <p class="roll-context">{{context}}</p>
   {{/if}}
@@ -27,4 +28,4 @@
   </div>
 
   <p class="roll-hint">{{localize "ZOMBICIDE.Dialog.SuccessOn"}} ≥{{threshold}}</p>
-</form>
+</div>

@@ -88,6 +88,9 @@
         "Heal": "Heal"
       }
     },
+    "Item": {
+      "New": "New {type}"
+    },
     "Skill": {
       "UnlockedAt": "Unlocked At",
       "ActionTypeLabel": "Action Type",

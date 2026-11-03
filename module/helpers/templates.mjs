@@ -4,7 +4,7 @@
  * @return {Promise}
  */
 export const preloadHandlebarsTemplates = async function () {
-  return loadTemplates([
+  return foundry.applications.handlebars.loadTemplates([
     // Actor partials.
     'systems/zombicide-chronicles/templates/actor/parts/actor-weapons.hbs',
     'systems/zombicide-chronicles/templates/actor/parts/actor-equipment.hbs',

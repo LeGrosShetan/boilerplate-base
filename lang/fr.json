@@ -88,6 +88,9 @@
         "Heal": "Guérison"
       }
     },
+    "Item": {
+      "New": "Nouvel objet : {type}"
+    },
     "Skill": {
       "UnlockedAt": "Débloquée à",
       "ActionTypeLabel": "Type d'action",

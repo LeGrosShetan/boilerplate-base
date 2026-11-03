@@ -10,11 +10,6 @@ import {
  */
 export class ZombicideItem extends Item {
   /** @override */
-  prepareData() {
-    super.prepareData();
-  }
-
-  /** @override */
   getRollData() {
     const rollData = { ...this.system };
     if (!this.actor) return rollData;
@@ -32,13 +27,12 @@ export class ZombicideItem extends Item {
   async roll({ skipDialog = false } = {}) {
     const actor = this.actor;
     const speaker = ChatMessage.getSpeaker({ actor });
-    const rollMode = game.settings.get('core', 'rollMode');
 
     if (actor && this.type === 'weapon' && this._linkedAction) {
-      return this._rollWeaponAttack(speaker, rollMode, skipDialog);
+      return this._rollWeaponAttack(speaker, skipDialog);
     }
 
-    return this._postDescription(speaker, rollMode);
+    return this._postDescription(speaker);
   }
 
   /**
@@ -58,7 +52,7 @@ export class ZombicideItem extends Item {
    * pool, so the situational modifier from the dialog applies on top of them.
    * @private
    */
-  async _rollWeaponAttack(speaker, rollMode, skipDialog = false) {
+  async _rollWeaponAttack(speaker, skipDialog = false) {
     const action = this._linkedAction;
     const diceBonus = this.system.diceBonus ?? 0;
     const pool = Math.max(0, action.pool + diceBonus);
@@ -79,15 +73,7 @@ export class ZombicideItem extends Item {
       if (modifier === null) return;
     }
 
-    return rollDicePool({
-      pool,
-      modifier,
-      threshold,
-      title,
-      context,
-      speaker,
-      rollMode,
-    });
+    return rollDicePool({ pool, modifier, threshold, title, context, speaker });
   }
 
   /**
@@ -95,18 +81,17 @@ export class ZombicideItem extends Item {
    * carry rules text rather than a roll.
    * @private
    */
-  async _postDescription(speaker, rollMode) {
+  async _postDescription(speaker) {
     const typeLabel = game.i18n.localize(`TYPES.Item.${this.type}`);
+    const { TextEditor } = foundry.applications.ux;
 
     return ChatMessage.create({
       speaker,
-      rollMode,
       flavor: `[${typeLabel}] ${this.name}`,
-      content: await TextEditor.enrichHTML(this.system.description ?? '', {
-        async: true,
-        rollData: this.getRollData(),
-        relativeTo: this,
-      }),
+      content: await TextEditor.implementation.enrichHTML(
+        this.system.description ?? '',
+        { rollData: this.getRollData(), relativeTo: this }
+      ),
     });
   }
 }

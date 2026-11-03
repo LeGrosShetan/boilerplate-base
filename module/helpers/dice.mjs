@@ -140,56 +140,55 @@ function formatPool(pool, modifier) {
  * @returns {Promise<number|null>} The chosen modifier, or null if cancelled.
  */
 export async function promptPoolModifier({ title, context, pool, threshold }) {
-  const content = await renderTemplate(
+  const content = await foundry.applications.handlebars.renderTemplate(
     'systems/zombicide-chronicles/templates/dialog/roll-modifier.hbs',
     { context, pool, threshold }
   );
 
-  return new Promise((resolve) => {
-    new Dialog(
+  const readModifier = (root) =>
+    Number.parseInt(root.querySelector('[name="modifier"]')?.value, 10) || 0;
+
+  // The roll button resolves to a number; dismissing resolves to null and the
+  // cancel button to its own action name, so anything non-numeric is a refusal.
+  const result = await foundry.applications.api.DialogV2.wait({
+    window: { title },
+    classes: ['zombicide', 'roll-modifier-dialog'],
+    content,
+    buttons: [
       {
-        title,
-        content,
-        default: 'roll',
-        buttons: {
-          roll: {
-            icon: '<i class="fas fa-dice-d6"></i>',
-            label: game.i18n.localize('ZOMBICIDE.Dialog.Roll'),
-            callback: (html) => {
-              const raw = html.find('[name="modifier"]').val();
-              resolve(Number.parseInt(raw, 10) || 0);
-            },
-          },
-          cancel: {
-            icon: '<i class="fas fa-times"></i>',
-            label: game.i18n.localize('ZOMBICIDE.Dialog.Cancel'),
-            callback: () => resolve(null),
-          },
-        },
-        // Already-settled promises ignore this, so it only catches the X button
-        close: () => resolve(null),
-        render: (html) => {
-          const input = html.find('[name="modifier"]');
-          const total = html.find('.total-pool');
-
-          const refresh = () => {
-            const modifier = Number.parseInt(input.val(), 10) || 0;
-            total.text(`${effectivePool(pool, modifier)}d6`);
-          };
-
-          html.find('[data-step]').on('click', (event) => {
-            const step = Number(event.currentTarget.dataset.step);
-            input.val((Number.parseInt(input.val(), 10) || 0) + step);
-            refresh();
-          });
-
-          input.on('input', refresh);
-          input.trigger('focus').trigger('select');
-        },
+        action: 'roll',
+        label: 'ZOMBICIDE.Dialog.Roll',
+        icon: 'fa-solid fa-dice-d6',
+        default: true,
+        callback: (_event, button) => readModifier(button.form),
       },
-      { classes: ['zombicide', 'dialog', 'roll-modifier-dialog'] }
-    ).render(true);
+      {
+        action: 'cancel',
+        label: 'ZOMBICIDE.Dialog.Cancel',
+        icon: 'fa-solid fa-xmark',
+      },
+    ],
+    render: (_event, dialog) => {
+      const root = dialog.element;
+      const input = root.querySelector('[name="modifier"]');
+      const total = root.querySelector('.total-pool');
+
+      const refresh = () => {
+        total.textContent = `${effectivePool(pool, readModifier(root))}d6`;
+      };
+
+      for (const stepper of root.querySelectorAll('[data-step]')) {
+        stepper.addEventListener('click', () => {
+          input.value = readModifier(root) + Number(stepper.dataset.step);
+          refresh();
+        });
+      }
+
+      input.addEventListener('input', refresh);
+    },
   });
+
+  return typeof result === 'number' ? result : null;
 }
 
 /**
@@ -202,7 +201,6 @@ export async function promptPoolModifier({ title, context, pool, threshold }) {
  * @param {string} [options.context]  What is being rolled; the pool maths and
  *                                    threshold are appended to it.
  * @param {object} options.speaker    ChatMessage speaker data.
- * @param {string} [options.rollMode] Roll mode; defaults to the core setting.
  * @returns {Promise<{roll: Roll, tally: object}>}
  */
 export async function rollDicePool({
@@ -212,7 +210,6 @@ export async function rollDicePool({
   title,
   context,
   speaker,
-  rollMode = game.settings.get('core', 'rollMode'),
 }) {
   const roll = new Roll(`${effectivePool(pool, modifier)}d6`);
   await roll.evaluate();
@@ -222,9 +219,10 @@ export async function rollDicePool({
     .filter(Boolean)
     .join(' · ');
 
+  // No message mode is passed: toMessage falls back to the user's current
+  // chat mode, which is what the roll-mode selector in the chat bar sets.
   await roll.toMessage({
     speaker,
-    rollMode,
     flavor: formatRollFlavor({ title, subtitle, tally }),
   });
 

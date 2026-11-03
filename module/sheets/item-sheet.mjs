@@ -5,9 +5,9 @@ import {
 
 /**
  * Extend the basic ItemSheet for Zombicide Chronicles.
- * @extends {ItemSheet}
+ * @extends {foundry.appv1.sheets.ItemSheet}
  */
-export class ZombicideItemSheet extends ItemSheet {
+export class ZombicideItemSheet extends foundry.appv1.sheets.ItemSheet {
   /**
    * Item types that should open on a tab other than the default one.
    * @type {Object<string, string>}
@@ -52,11 +52,10 @@ export class ZombicideItemSheet extends ItemSheet {
     const context = super.getData();
     const itemData = this.document.toObject(false);
 
-    context.enrichedDescription = await TextEditor.enrichHTML(
+    context.enrichedDescription = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
       this.item.system.description,
       {
         secrets: this.document.isOwner,
-        async: true,
         rollData: this.item.getRollData(),
         relativeTo: this.item,
       }

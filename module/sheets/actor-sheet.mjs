@@ -10,9 +10,9 @@ import {
 
 /**
  * Extend the basic ActorSheet for Zombicide Chronicles.
- * @extends {ActorSheet}
+ * @extends {foundry.appv1.sheets.ActorSheet}
  */
-export class ZombicideActorSheet extends ActorSheet {
+export class ZombicideActorSheet extends foundry.appv1.sheets.ActorSheet {
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
@@ -52,11 +52,10 @@ export class ZombicideActorSheet extends ActorSheet {
       this._prepareItems(context);
     }
 
-    context.enrichedBiography = await TextEditor.enrichHTML(
+    context.enrichedBiography = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
       this.actor.system.biography,
       {
         secrets: this.document.isOwner,
-        async: true,
         rollData: this.actor.getRollData(),
         relativeTo: this.actor,
       }
@@ -165,12 +164,18 @@ export class ZombicideActorSheet extends ActorSheet {
   async _onItemCreate(event) {
     event.preventDefault();
     const header = event.currentTarget;
-    const type = header.dataset.type;
-    const data = duplicate(header.dataset);
-    const name = `New ${type.capitalize()}`;
-    const itemData = { name, type, system: data };
-    delete itemData.system['type'];
-    return await Item.create(itemData, { parent: this.actor });
+    const { type, ...system } = header.dataset;
+
+    return Item.create(
+      {
+        name: game.i18n.format('ZOMBICIDE.Item.New', {
+          type: game.i18n.localize(`TYPES.Item.${type}`),
+        }),
+        type,
+        system,
+      },
+      { parent: this.actor }
+    );
   }
 
   async _onRoll(event) {

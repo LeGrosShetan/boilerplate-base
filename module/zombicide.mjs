@@ -41,7 +41,8 @@ Hooks.once('init', function () {
     skill: models.SkillData,
   };
 
-  CONFIG.ActiveEffect.legacyTransferral = false;
+  const { Actors, Items } = foundry.documents.collections;
+  const { ActorSheet, ItemSheet } = foundry.appv1.sheets;
 
   Actors.unregisterSheet('core', ActorSheet);
   Actors.registerSheet('zombicide-chronicles', ZombicideActorSheet, {

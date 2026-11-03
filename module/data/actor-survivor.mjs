@@ -106,17 +106,4 @@ export default class SurvivorData extends ZombicideActorBase {
 
     return actions;
   }
-
-  getRollData() {
-    const data = {};
-    for (const [key, attr] of Object.entries(this.attributes)) {
-      data[key] = foundry.utils.deepClone(attr);
-    }
-    data.attributes = foundry.utils.deepClone(this.attributes);
-    data.aptitudes = foundry.utils.deepClone(this.aptitudes);
-    data.actions = foundry.utils.deepClone(this.actions);
-    data.dangerLevel = this.dangerLevel;
-    data.experience = this.experience;
-    return data;
-  }
 }
