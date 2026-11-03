@@ -55,6 +55,8 @@
       "Damage": "Dégâts",
       "Accuracy": "Précision",
       "AccuracyHint": "Valeur minimale d'un dé pour compter comme une touche",
+      "DiceBonus": "Dés de l'arme",
+      "DiceBonusHint": "Dés que cette arme ajoute à son action d'attaque, avant tout modificateur situationnel",
       "Range": "Portée",
       "Noise": "Bruit",
       "Noisy": "Fait du bruit",

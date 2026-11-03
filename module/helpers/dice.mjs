@@ -109,6 +109,15 @@ export function effectivePool(pool, modifier = 0) {
 }
 
 /**
+ * "+2" / "−1", using a typographic minus.
+ * @param {number} value
+ * @returns {string}
+ */
+export function formatSigned(value) {
+  return `${value > 0 ? '+' : '−'}${Math.abs(value)}`;
+}
+
+/**
  * "5 − 2 = 3d6", or just "5d6" when unmodified.
  * @param {number} pool
  * @param {number} modifier

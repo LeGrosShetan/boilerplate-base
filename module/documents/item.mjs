@@ -1,4 +1,8 @@
-import { rollDicePool, promptPoolModifier } from '../helpers/dice.mjs';
+import {
+  rollDicePool,
+  promptPoolModifier,
+  formatSigned,
+} from '../helpers/dice.mjs';
 
 /**
  * Extend the basic Item for Zombicide Chronicles.
@@ -49,29 +53,34 @@ export class ZombicideItem extends Item {
   }
 
   /**
-   * Attack roll: the linked action's pool, each die ≥ accuracy is a success.
+   * Attack roll: the linked action's pool plus the weapon's own dice, with each
+   * die ≥ accuracy counting as a hit. The weapon's dice are part of the base
+   * pool, so the situational modifier from the dialog applies on top of them.
    * @private
    */
   async _rollWeaponAttack(speaker, rollMode, skipDialog = false) {
     const action = this._linkedAction;
+    const diceBonus = this.system.diceBonus ?? 0;
+    const pool = Math.max(0, action.pool + diceBonus);
     const threshold = this.system.accuracy ?? 4;
     const title = `${game.i18n.localize('ZOMBICIDE.Roll.Attack')} — ${this.name}`;
-    const context =
-      `${action.label} (${action.attributeLabel} + ${action.aptitudeLabel})`;
+
+    const parts = [`${action.label} (${action.attributeLabel} + ${action.aptitudeLabel})`];
+    if (diceBonus) {
+      parts.push(
+        `${game.i18n.localize('ZOMBICIDE.Weapon.DiceBonus')} ${formatSigned(diceBonus)}`
+      );
+    }
+    const context = parts.join(' · ');
 
     let modifier = 0;
     if (!skipDialog) {
-      modifier = await promptPoolModifier({
-        title,
-        context,
-        pool: action.pool,
-        threshold,
-      });
+      modifier = await promptPoolModifier({ title, context, pool, threshold });
       if (modifier === null) return;
     }
 
     return rollDicePool({
-      pool: action.pool,
+      pool,
       modifier,
       threshold,
       title,

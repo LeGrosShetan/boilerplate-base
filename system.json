@@ -22,8 +22,8 @@
   ],
   "version": "0.1.0",
   "compatibility": {
-    "minimum": 11,
-    "verified": "11.315"
+    "minimum": 13,
+    "verified": "13"
   },
   "esmodules": ["module/zombicide.mjs"],
   "styles": ["css/zombicide.css"],
@@ -39,14 +39,27 @@
       "path": "lang/fr.json"
     }
   ],
+  "documentTypes": {
+    "Actor": {
+      "survivor": {},
+      "zombie": {}
+    },
+    "Item": {
+      "weapon": {},
+      "equipment": {},
+      "skill": {}
+    }
+  },
   "packs": [],
   "packFolders": [],
   "socket": false,
   "manifest": "Replace this with a link to the /latest release system.json",
   "download": "This must link to a .zip file of the current version",
   "background": "systems/zombicide-chronicles/assets/anvil-impact.png",
-  "gridDistance": 5,
-  "gridUnits": "m",
+  "grid": {
+    "distance": 5,
+    "units": "m"
+  },
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "stress"
 }

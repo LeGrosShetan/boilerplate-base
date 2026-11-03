@@ -15,6 +15,11 @@ export default class WeaponData extends ZombicideItemBase {
     // Damage dice/value (e.g. "1", "2", "1d6")
     schema.damage = new fields.StringField({ required: true, initial: '1', blank: false });
 
+    // Dice the weapon contributes to its attack action's pool. Added before
+    // any situational modifier, so it is part of the roll's base pool.
+    // Negative values are allowed, for unwieldy weapons.
+    schema.diceBonus = new fields.NumberField({ ...int, initial: 0 });
+
     // Range expressed in zones (0 = same zone as target)
     schema.rangeMin = new fields.NumberField({ ...int, initial: 0, min: 0 });
     schema.rangeMax = new fields.NumberField({ ...int, initial: 0, min: 0 });
